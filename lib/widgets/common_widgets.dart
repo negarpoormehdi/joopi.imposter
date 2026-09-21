@@ -244,10 +244,16 @@ class BadgeTag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppTheme.countBadgeHorizontalPadding,
+        vertical: AppTheme.countBadgeVerticalPadding,
+      ),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(16),
+        color: AppTheme.bgPurple.withOpacity(0.8),
+        borderRadius: BorderRadius.circular(AppTheme.numberBoxRadius),
+        border: Border.all(
+          color: AppTheme.primaryPurple.withOpacity(0.4),
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -258,11 +264,11 @@ class BadgeTag extends StatelessWidget {
           ],
           Text(
             text,
-            style: TextStyle(
+            style:  TextStyle(
               fontFamily: AppTheme.fontFamily,
-              color: color,
-              fontWeight: FontWeight.w800,
-              fontSize: 14,
+              color: AppTheme.textSecondary,
+              fontSize: AppTheme.subtitleFontSize,
+              fontWeight: AppTheme.badgeWeight,
             ),
             textDirection: TextDirection.rtl,
           ),
@@ -317,7 +323,7 @@ class PlayerChip extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 4),
           Text(
             name,
             style: TextStyle(
@@ -329,7 +335,7 @@ class PlayerChip extends StatelessWidget {
             textDirection: TextDirection.rtl,
           ),
 
-          const SizedBox(width: 8),
+          const SizedBox(width: 4),
           GestureDetector(
             onTap: onRemove,
             child: Icon(

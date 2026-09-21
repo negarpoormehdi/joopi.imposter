@@ -21,20 +21,20 @@ class AppTheme {
   static const double sectionPadding = 20;
   static const double sectionSpacing = 20;
 
-  static const double playerIconBoxSize = 56;
-  static const double playerIconBoxRadius = 18;
-  static const double playerIconSize = 28;
+  static const double playerIconBoxSize = 40;
+  static const double playerIconBoxRadius = 14;
+  static const double playerIconSize = 24;
 
   static const double titleFontSize = 19;
-  static const double subtitleFontSize = 13;
+  static const double subtitleFontSize = 12;
   static const double badgeFontSize = 13;
-  static const double chipFontSize = 15;
+  static const double chipFontSize = 12;
   static const double inputFontSize = 14;
-  static const double buttonFontSize = 15;
-  static const double bigNumberFontSize = 32;
-  static const double smallNumberFontSize = 20;
-  static const double largeTitleFontSize = 22;
-  static const double largeSubtitleFontSize = 14;
+  static const double buttonChipFontSize = 13;
+  static const double bigNumberFontSize = 24;
+  static const double smallNumberFontSize = 16;
+  static const double largeTitleFontSize = 16;
+  static const double largeSubtitleFontSize = 12;
 
   static const FontWeight titleWeight = FontWeight.w900;
   static const FontWeight subtitleWeight = FontWeight.w500;
@@ -46,27 +46,27 @@ class AppTheme {
   static const double chipDotSize = 12;
   static const double chipCloseIconSize = 20;
   static const double chipSpacing = 10;
-  static const double chipHorizontalPadding = 16;
-  static const double chipVerticalPadding = 10;
+  static const double chipHorizontalPadding = 10;
+  static const double chipVerticalPadding = 4;
 
-  static const double addButtonIconSize = 22;
-  static const double addButtonHorizontalPadding = 24;
-  static const double addButtonVerticalPadding = 12;
+  static const double addButtonIconSize = 18;
+  static const double addButtonHorizontalPadding = 14;
+  static const double addButtonVerticalPadding = 4;
   static const double addButtonRadius = 22;
   static const double addRowPadding = 5;
   static const double addRowRadius = 26;
 
-  static const double numberBoxRadius = 38;
-  static const double numberBoxHorizontalPadding = 24;
-  static const double numberBoxVerticalPadding = 20;
+  static const double numberBoxRadius = 18;
+  static const double numberBoxHorizontalPadding = 12;
+  static const double numberBoxVerticalPadding = 4;
 
-  static const double controlButtonSize = 56;
-  static const double controlButtonRadius = 20;
+  static const double controlButtonSize = 45;
+  static const double controlButtonRadius = 40;
   static const double controlIconSize = 28;
 
   static const double countBadgeRadius = 999;
-  static const double countBadgeHorizontalPadding = 14;
-  static const double countBadgeVerticalPadding = 8;
+  static const double countBadgeHorizontalPadding = 10;
+  static const double countBadgeVerticalPadding = 2;
 
   static const String fontFamily = 'Vazirmatn';
 

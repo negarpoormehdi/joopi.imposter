@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common_widgets.dart';
 import '../models/game_state.dart';
@@ -263,7 +264,7 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                       ),
                       textDirection: TextDirection.rtl,
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 4),
                     Padding(
                       padding: const EdgeInsets.only(top: 6),
                       child: Text(
@@ -272,7 +273,7 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                           fontFamily: AppTheme.fontFamily,
                           color: Colors.white,
                           fontSize: AppTheme.smallNumberFontSize,
-                          fontWeight: AppTheme.badgeWeight,
+                          fontWeight: AppTheme.subtitleWeight,
                         ),
                         textDirection: TextDirection.rtl,
                       ),
@@ -282,7 +283,7 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 8),
           Directionality(
             textDirection: TextDirection.rtl,
             child: Row(
@@ -291,14 +292,14 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                   icon: Icons.remove,
                   onTap: () => _setPlayersCount(_playersCount - 1),
                 ),
-                const SizedBox(width: 8),
+                // const SizedBox(width: 2),
                 Expanded(
                   child: SliderTheme(
                     data: SliderThemeData(
                       trackHeight: 8,
                       activeTrackColor: AppTheme.cardBgLight,
                       inactiveTrackColor: AppTheme.cardBgLight,
-                      thumbColor: AppTheme.bgDark,
+                      thumbColor: AppTheme.textSecondary,
                       overlayColor: Colors.transparent,
                       thumbShape: const _NeonCircleSliderThumb(),
                     ),
@@ -310,7 +311,7 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 8),
+                // const SizedBox(width: 2),
                 _buildRoundedSquareButton(
                   icon: Icons.add,
                   onTap: () => _setPlayersCount(_playersCount + 1),
@@ -385,14 +386,13 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            textDirection: TextDirection.rtl,
             children: [
               Container(
                 width: AppTheme.playerIconBoxSize,
                 height: AppTheme.playerIconBoxSize,
                 decoration: BoxDecoration(
                   color: AppTheme.bgPurple.withOpacity(0.8),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(AppTheme.playerIconBoxRadius),
                   border: Border.all(
                     color: AppTheme.primaryPurple.withOpacity(0.4),
                   ),
@@ -413,12 +413,11 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                       style: TextStyle(
                         fontFamily: AppTheme.fontFamily,
                         color: AppTheme.textPrimary,
-                        fontSize: AppTheme.titleFontSize,
+                        fontSize: AppTheme.largeTitleFontSize,
                         fontWeight: AppTheme.titleWeight,
                       ),
-                      textDirection: TextDirection.rtl,
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 0),
                     Text(
                       'مدیریت نوبت و کارت‌های اختصاصی',
                       style: TextStyle(
@@ -450,7 +449,7 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                   style: TextStyle(
                     fontFamily: AppTheme.fontFamily,
                     color: AppTheme.textSecondary,
-                    fontSize: AppTheme.badgeFontSize,
+                    fontSize: AppTheme.subtitleFontSize,
                     fontWeight: AppTheme.badgeWeight,
                   ),
                   textDirection: TextDirection.rtl,
@@ -553,13 +552,13 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                           color: Colors.white,
                           size: AppTheme.addButtonIconSize,
                         ),
-                        const SizedBox(width: 6),
+                        const SizedBox(width: 2),
                         Text(
                           'افزودن',
                           style: TextStyle(
                             fontFamily: AppTheme.fontFamily,
                             color: Colors.white,
-                            fontSize: AppTheme.buttonFontSize,
+                            fontSize: AppTheme.buttonChipFontSize,
                             fontWeight: AppTheme.buttonWeight,
                           ),
                         ),
@@ -576,96 +575,189 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
   }
 
   Widget _buildSpyCountSection() {
-    return SectionCard(
-      child: Row(
-        children: [
-          Container(
-            width: 72,
-            height: 72,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.red.withOpacity(0.15),
-              border: Border.all(color: Colors.red.withOpacity(0.4), width: 2),
-              boxShadow: [
-                BoxShadow(color: Colors.red.withOpacity(0.3), blurRadius: 20),
-              ],
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.fromLTRB(16, 18, 20, 18),
+      decoration: BoxDecoration(
+        color: AppTheme.cardBgLight,
+        borderRadius: BorderRadius.circular(32),
+        border: Border.all(
+          color: AppTheme.primaryPurple.withOpacity(0.4),
+          width: 1.2,
+        ),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [AppTheme.bgPurple.withOpacity(0.45), AppTheme.cardBgLight],
+        ),
+      ),
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Row(
+          children: [
+            _buildSpyIcon(),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'تعداد جاسوس ها',
+                    style: const TextStyle(
+                      fontFamily: AppTheme.fontFamily,
+                      color: AppTheme.textPrimary,
+                      fontSize: AppTheme.largeTitleFontSize,
+                      fontWeight: FontWeight.w900,
+                      height: 1.1,
+                    ),
+                    textDirection: TextDirection.rtl,
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'افرادی که مکان را نمی دانند',
+                    style: const TextStyle(
+                      fontFamily: AppTheme.fontFamily,
+                      color: AppTheme.textSecondary,
+                      fontSize: AppTheme.subtitleFontSize,
+                      fontWeight: FontWeight.w500,
+                      height: 1.2,
+                    ),
+                    textDirection: TextDirection.rtl,
+                  ),
+                ],
+              ),
             ),
-            child: const Icon(Icons.face, color: Colors.red, size: 36),
+            const SizedBox(width: 14),
+            _buildSpyCounter(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSpyIcon() {
+    return Container(
+      width: 50,
+      height: 50,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: AppTheme.primaryPurple.withOpacity(0.55),
+          width: 3,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.primaryPurple.withOpacity(0.35),
+            blurRadius: 16,
+            spreadRadius: 2,
           ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  'تعداد جاسوس‌ها',
+        ],
+      ),
+      child: Container(
+        margin: const EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: const Color(0xFFEF5540),
+          gradient: const RadialGradient(
+            colors: [Color(0xFFFF6B5A), Color(0xFFE13E2F)],
+          ),
+        ),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            SvgPicture.asset('assets/spy.svg'),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _spyGlass() {
+    return Container(
+      width: 14,
+      height: 14,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.transparent,
+        border: Border.all(color: Colors.white, width: 2.5),
+      ),
+    );
+  }
+
+  Widget _buildSpyCounter() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: const Color(0xFF120A2A),
+        borderRadius: BorderRadius.circular(999),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.25),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildSpyCounterButton(
+              icon: Icons.add,
+              onTap: () {
+                if (_spyCount < _maxSpy) setState(() => _spyCount++);
+              },
+            ),
+            const SizedBox(width: 4),
+            SizedBox(
+              width: 26,
+              child: Center(
+                child: Text(
+                  '${_spyCount.toFa}',
                   style: TextStyle(
                     fontFamily: AppTheme.fontFamily,
                     color: AppTheme.textPrimary,
-                    fontSize: AppTheme.titleFontSize,
-                    fontWeight: AppTheme.titleWeight,
+                    fontSize: AppTheme.bigNumberFontSize,
+                    fontWeight: FontWeight.w300,
+                    height: 1,
                   ),
-                  textDirection: TextDirection.rtl,
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  'افرادی که مکان را نمی‌دانند',
-                  style: TextStyle(
-                    fontFamily: AppTheme.fontFamily,
-                    color: AppTheme.textSecondary,
-                    fontSize: AppTheme.subtitleFontSize,
-                    fontWeight: AppTheme.subtitleWeight,
-                  ),
-                  textDirection: TextDirection.rtl,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 12),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
-            decoration: BoxDecoration(
-              color: AppTheme.cardBgLight,
-              borderRadius: BorderRadius.circular(24),
-              border: Border.all(
-                color: AppTheme.primaryPurple.withOpacity(0.3),
               ),
             ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _buildSmallButton(
-                  icon: Icons.remove,
-                  onTap: () {
-                    if (_spyCount > 1) setState(() => _spyCount--);
-                  },
-                ),
-                const SizedBox(width: 8),
-                SizedBox(
-                  width: 40,
-                  child: Center(
-                    child: Text(
-                      '${_spyCount.toFa}',
-                      style: TextStyle(
-                        fontFamily: AppTheme.fontFamily,
-                        color: AppTheme.textPrimary,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                _buildSmallButton(
-                  icon: Icons.add,
-                  onTap: () {
-                    if (_spyCount < _maxSpy) setState(() => _spyCount++);
-                  },
-                ),
-              ],
+            const SizedBox(width: 10),
+            _buildSpyCounterButton(
+              icon: Icons.remove,
+              onTap: () {
+                if (_spyCount > 1) setState(() => _spyCount--);
+              },
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSpyCounterButton({
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: const Color(0xFF2A1A50),
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: AppTheme.primaryPurple.withOpacity(0.45),
+            width: 1.5,
           ),
-        ],
+        ),
+        child: Icon(icon, color: Colors.white, size: 26),
       ),
     );
   }
@@ -694,51 +786,68 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const IconCircle(
-                icon: Icons.timer_outlined,
-                color: AppTheme.primaryPurple,
+              Container(
+                width: AppTheme.playerIconBoxSize,
+                height: AppTheme.playerIconBoxSize,
+                decoration: BoxDecoration(
+                  color: AppTheme.bgPurple.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(AppTheme.playerIconBoxRadius),
+                  border: Border.all(
+                    color: AppTheme.primaryPurple.withOpacity(0.4),
+                  ),
+                ),
+                child: Icon(
+                  Icons.timer_outlined,
+                  color: AppTheme.textSecondary,
+                  size: AppTheme.playerIconSize,
+                ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 12),
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
                           'زمان هر راند بازی',
                           style: TextStyle(
                             fontFamily: AppTheme.fontFamily,
                             color: AppTheme.textPrimary,
-                            fontSize: 19,
-                            fontWeight: FontWeight.w700,
+                            fontSize: AppTheme.largeTitleFontSize,
+                            fontWeight: AppTheme.titleWeight,
                           ),
                           textDirection: TextDirection.rtl,
                         ),
-                        const SizedBox(width: 10),
-                        BadgeTag(
-                          text: '${_roundTime.toFa} دقیقه',
-                          color: AppTheme.darkPurple,
-                        ),
+
                       ],
                     ),
                   ],
                 ),
               ),
+              BadgeTag(
+                text: '${_roundTime.toFa} دقیقه',
+                color: AppTheme.darkPurple,
+              ),
             ],
           ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildTimeOption(3, '۳ دقیقه'),
-              _buildTimeOption(5, '۵ دقیقه'),
-              _buildTimeOption(8, '۸ دقیقه'),
-              _buildTimeOption(10, '۱۰ دقیقه'),
-            ],
+          const SizedBox(height: 10),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                _buildTimeOption(3, '۳ دقیقه'),
+                const SizedBox(width: 8),
+                _buildTimeOption(5, '۵ دقیقه'),
+                const SizedBox(width: 8),
+                _buildTimeOption(8, '۸ دقیقه'),
+                const SizedBox(width: 8),
+                _buildTimeOption(10, '۱۰ دقیقه'),
+              ],
+            ),
           ),
         ],
       ),
@@ -750,7 +859,7 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
     return GestureDetector(
       onTap: () => setState(() => _roundTime = value),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
           gradient: active
               ? const LinearGradient(
@@ -758,7 +867,7 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                 )
               : null,
           color: active ? null : AppTheme.cardBgLight,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(14),
           border: Border.all(
             color: active
                 ? AppTheme.primaryPurple
@@ -797,51 +906,57 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
         children: [
           Row(
             children: [
-              const IconCircle(
-                icon: Icons.layers_outlined,
-                color: AppTheme.primaryPurple,
-                glow: true,
+              Container(
+                width: AppTheme.playerIconBoxSize,
+                height: AppTheme.playerIconBoxSize,
+                decoration: BoxDecoration(
+                  color: AppTheme.bgPurple.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(AppTheme.playerIconBoxRadius),
+                  border: Border.all(
+                    color: AppTheme.primaryPurple.withOpacity(0.4),
+                  ),
+                ),
+                child: Icon(
+                  Icons.category_outlined,
+                  color: AppTheme.textSecondary,
+                  size: AppTheme.playerIconSize,
+                ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 12),
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          'دسته‌بندی کلمات',
-                          style: TextStyle(
-                            fontFamily: AppTheme.fontFamily,
-                            color: AppTheme.textPrimary,
-                            fontSize: 19,
-                            fontWeight: FontWeight.w700,
-                          ),
-                          textDirection: TextDirection.rtl,
-                        ),
-                        const SizedBox(width: 10),
-                        BadgeTag(
-                          text: '${activeList.length} موضوع فعال',
-                          color: AppTheme.darkPurple,
-                        ),
-                      ],
+                    Text(
+                      'دسته‌بندی کلمات',
+                      style: TextStyle(
+                        fontFamily: AppTheme.fontFamily,
+                        color: AppTheme.textPrimary,
+                        fontSize: AppTheme.largeTitleFontSize,
+                        fontWeight: AppTheme.titleWeight,
+                      ),
+                      textDirection: TextDirection.rtl,
                     ),
-                    const SizedBox(height: 4),
                     Text(
                       'انتخاب موضوعات بازی و افزودن کلمه',
                       style: TextStyle(
                         fontFamily: AppTheme.fontFamily,
-                        color: AppTheme.textSecondary,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
+                        color: AppTheme.textMuted,
+                        fontSize: AppTheme.subtitleFontSize,
+                        fontWeight: AppTheme.subtitleWeight,
                       ),
                       textDirection: TextDirection.rtl,
                     ),
+
                   ],
                 ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 0),
+              BadgeTag(
+                text: '${activeList.length} موضوع فعال',
+                color: AppTheme.darkPurple,
+              ),
+              const SizedBox(width: 4),
               _buildRoundNavButton(Icons.arrow_forward_ios, _openTopics),
             ],
           ),
@@ -864,7 +979,7 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
           ),
           const SizedBox(height: 16),
           const Align(
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.centerRight,
             child: Text(
               '+۱۴۰ کلمه',
               style: TextStyle(
@@ -892,14 +1007,10 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 44,
-        height: 44,
-        decoration: BoxDecoration(
-          color: AppTheme.cardBgLight,
-          shape: BoxShape.circle,
-          border: Border.all(color: AppTheme.primaryPurple.withOpacity(0.4)),
-        ),
-        child: Icon(icon, color: AppTheme.textPrimary, size: 18),
+        // width: 44,
+        // height: 44,
+
+        child: Icon(icon, color: AppTheme.textMuted, size: 18),
       ),
     );
   }
@@ -955,29 +1066,28 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
-          height: 32,
-          child: Switch(
-            value: value,
-            onChanged: onChanged,
-            activeColor: AppTheme.primaryPurple,
-            activeTrackColor: AppTheme.primaryPurple.withOpacity(0.4),
-            inactiveThumbColor: AppTheme.textMuted,
-            inactiveTrackColor: AppTheme.cardBgLight,
-          ),
-        ),
-        const SizedBox(width: 14),
+        // Container(
+        //   width: 10,
+        //   height: 10,
+        //   margin: const EdgeInsets.only(top: 8),
+        //   decoration: const BoxDecoration(
+        //     color: AppTheme.primaryPurple,
+        //     shape: BoxShape.circle,
+        //   ),
+        // ),
+        const SizedBox(width: 6),
+
         Expanded(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 title,
                 style: TextStyle(
                   fontFamily: AppTheme.fontFamily,
                   color: AppTheme.textPrimary,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
+                  fontSize: AppTheme.largeTitleFontSize,
+                  fontWeight: AppTheme.titleWeight,
                 ),
                 textDirection: TextDirection.rtl,
               ),
@@ -986,26 +1096,30 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                 subtitle,
                 style: TextStyle(
                   fontFamily: AppTheme.fontFamily,
-                  color: AppTheme.textSecondary,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  height: 1.6,
+                  color: AppTheme.textMuted,
+                  fontSize: AppTheme.subtitleFontSize,
+                  fontWeight: AppTheme.subtitleWeight,
                 ),
                 textDirection: TextDirection.rtl,
               ),
             ],
           ),
         ),
-        const SizedBox(width: 6),
-        Container(
-          width: 10,
-          height: 10,
-          margin: const EdgeInsets.only(top: 8),
-          decoration: const BoxDecoration(
-            color: AppTheme.primaryPurple,
-            shape: BoxShape.circle,
+        const SizedBox(width: 14),
+
+        SizedBox(
+          height: 32,
+          child: Switch(
+            value: value,
+            onChanged: onChanged,
+            activeColor: AppTheme.textPrimary,
+            activeTrackColor: AppTheme.pinkPurple,
+            inactiveThumbColor: AppTheme.textMuted,
+            inactiveTrackColor: AppTheme.cardBgLight,
           ),
         ),
+
+
       ],
     );
   }
@@ -1035,7 +1149,7 @@ class _NeonCircleSliderThumb extends SliderComponentShape {
     required Size sizeWithOverflow,
   }) {
     final canvas = context.canvas;
-    const radius = 15.0;
+    const radius = 10.0;
     const borderWidth = 3.0;
 
     final shadowPaint = Paint()
@@ -1044,12 +1158,12 @@ class _NeonCircleSliderThumb extends SliderComponentShape {
     canvas.drawCircle(center, radius + 2, shadowPaint);
 
     final borderPaint = Paint()
-      ..color = AppTheme.lightPurple
+      ..color = AppTheme.bgDark
       ..style = PaintingStyle.stroke
       ..strokeWidth = borderWidth;
     canvas.drawCircle(center, radius, borderPaint);
 
-    final fillPaint = Paint()..color = AppTheme.bgDark;
+    final fillPaint = Paint()..color = AppTheme.lightPurple;
     canvas.drawCircle(center, radius - borderWidth / 2, fillPaint);
   }
 }
@@ -1069,14 +1183,16 @@ class CategoryChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppTheme.chipHorizontalPadding,
+        vertical: AppTheme.chipVerticalPadding,
+      ),
       decoration: BoxDecoration(
-        color: active ? color.withOpacity(0.2) : AppTheme.cardBgLight,
-        borderRadius: BorderRadius.circular(18),
+        color: AppTheme.cardBgLight,
+        borderRadius: BorderRadius.circular(999),
         border: Border.all(
-          color: active
-              ? color.withOpacity(0.6)
-              : AppTheme.primaryPurple.withOpacity(0.3),
+          color: AppTheme.primaryPurple.withValues(alpha: 0.5),
+          width: 1,
         ),
       ),
       child: Row(
@@ -1093,8 +1209,8 @@ class CategoryChip extends StatelessWidget {
             style: TextStyle(
               fontFamily: AppTheme.fontFamily,
               color: AppTheme.textPrimary,
-              fontSize: 14,
-              fontWeight: FontWeight.w700,
+              fontSize: AppTheme.chipFontSize,
+              fontWeight: AppTheme.chipWeight,
             ),
             textDirection: TextDirection.rtl,
           ),
