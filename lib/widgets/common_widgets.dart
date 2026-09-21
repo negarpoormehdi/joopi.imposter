@@ -58,6 +58,7 @@ class AppHeader extends StatelessWidget {
                     title,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
+                      fontFamily: AppTheme.fontFamily,
                       color: AppTheme.textPrimary,
                       fontSize: 27,
                       fontWeight: FontWeight.w900,
@@ -71,6 +72,7 @@ class AppHeader extends StatelessWidget {
                     subtitle,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
+                      fontFamily: AppTheme.fontFamily,
                       color: AppTheme.textSecondary,
                       fontSize: 13.5,
                       fontWeight: FontWeight.w600,
@@ -257,6 +259,7 @@ class BadgeTag extends StatelessWidget {
           Text(
             text,
             style: TextStyle(
+              fontFamily: AppTheme.fontFamily,
               color: color,
               fontWeight: FontWeight.w800,
               fontSize: 14,
@@ -284,35 +287,54 @@ class PlayerChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppTheme.chipHorizontalPadding,
+        vertical: AppTheme.chipVerticalPadding,
+      ),
       decoration: BoxDecoration(
         color: AppTheme.cardBgLight,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppTheme.primaryPurple.withOpacity(0.4)),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(
+          color: AppTheme.primaryPurple.withValues(alpha: 0.5),
+          width: 1,
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
+        textDirection: TextDirection.rtl,
         children: [
           if (onRemove != null)
             GestureDetector(
               onTap: onRemove,
-              child: Icon(Icons.close, color: AppTheme.textMuted, size: 18),
+              child: Icon(
+                Icons.close,
+                color: AppTheme.textMuted,
+                size: AppTheme.chipCloseIconSize,
+              ),
             ),
-          const SizedBox(width: 8),
-          Container(
-            width: 10,
-            height: 10,
-            decoration: BoxDecoration(color: dotColor, shape: BoxShape.circle),
-          ),
           const SizedBox(width: 8),
           Text(
             name,
-            style: const TextStyle(
+            style: TextStyle(
+              fontFamily: AppTheme.fontFamily,
               color: AppTheme.textPrimary,
-              fontSize: 15,
-              fontWeight: FontWeight.w700,
+              fontSize: AppTheme.chipFontSize,
+              fontWeight: AppTheme.chipWeight,
             ),
             textDirection: TextDirection.rtl,
+          ),
+          const SizedBox(width: 8),
+          Container(
+            width: AppTheme.chipDotSize,
+            height: AppTheme.chipDotSize,
+            decoration: BoxDecoration(
+              color: dotColor,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: AppTheme.bgDark.withValues(alpha: 0.5),
+                width: 1,
+              ),
+            ),
           ),
         ],
       ),
@@ -350,6 +372,7 @@ class SectionHeader extends StatelessWidget {
                   Text(
                     title,
                     style: const TextStyle(
+                      fontFamily: AppTheme.fontFamily,
                       color: AppTheme.textPrimary,
                       fontSize: 19,
                       fontWeight: FontWeight.w900,
@@ -366,6 +389,7 @@ class SectionHeader extends StatelessWidget {
               Text(
                 subtitle,
                 style: const TextStyle(
+                  fontFamily: AppTheme.fontFamily,
                   color: AppTheme.textSecondary,
                   fontSize: 13,
                   fontWeight: FontWeight.w500,
@@ -493,6 +517,7 @@ class BottomActionButton extends StatelessWidget {
                   Text(
                     title,
                     style: const TextStyle(
+                      fontFamily: AppTheme.fontFamily,
                       color: AppTheme.textPrimary,
                       fontSize: 20,
                       fontWeight: FontWeight.w900,
@@ -503,6 +528,7 @@ class BottomActionButton extends StatelessWidget {
                   Text(
                     subtitle,
                     style: const TextStyle(
+                      fontFamily: AppTheme.fontFamily,
                       color: AppTheme.textSecondary,
                       fontSize: 13,
                       fontWeight: FontWeight.w500,

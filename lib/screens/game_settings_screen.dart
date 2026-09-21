@@ -65,7 +65,7 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
   int get _maxSpy => (_playersCount - 2).clamp(1, 5);
 
   void _setPlayersCount(int newCount) {
-    if (newCount < 3 || newCount > 10) return;
+    if (newCount < 3 || newCount > 15) return;
     setState(() {
       while (_players.length < newCount) {
         final idx = _players.length - 1;
@@ -93,7 +93,7 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
             return _defaultNames[idx % _defaultNames.length];
           }()
         : text;
-    if (_players.length >= 10) return;
+    if (_players.length >= 15) return;
     setState(() {
       final finalName = _players.contains(name)
           ? '$name (${_players.length + 1})'
@@ -150,6 +150,7 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
               AppHeader(
                 title: 'تنظیمات بازی',
                 subtitle: 'اتاق بازی دورهمی',
+                icon: Icons.tune_rounded,
                 onBack: () => Navigator.of(context).pop(),
                 navIcon: Icons.arrow_forward_ios,
               ),
@@ -176,6 +177,7 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                   child: Text(
                     'قوانین استاندارد جاسوس • نسخه کلاسیک',
                     style: TextStyle(
+                      fontFamily: AppTheme.fontFamily,
                       color: AppTheme.textMuted,
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
@@ -195,155 +197,185 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
     return SectionCard(
       child: Column(
         children: [
-          SectionHeader(
-            title: 'چند نفر بازی می‌کنید؟',
-            subtitle: 'تعداد کل بازیکن‌ها',
-            leadingBadge: BadgeTag(
-              text: 'بازیکن $_playersCount نفر',
-              color: AppTheme.primaryPurple,
-              icon: Icons.water_drop,
-            ),
-          ),
-          const SizedBox(height: 24),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildCircleButton(
-                icon: Icons.remove,
-                onTap: () => _setPlayersCount(_playersCount - 1),
-              ),
-              const SizedBox(width: 8),
+
               Expanded(
-                child: Stack(
-                  alignment: Alignment.center,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      height: 8,
-                      decoration: BoxDecoration(
-                        color: AppTheme.cardBgLight,
-                        borderRadius: BorderRadius.circular(4),
+                    Text(
+                      'تعداد کل بازیکن‌ها',
+                      style: TextStyle(
+                        fontFamily: AppTheme.fontFamily,
+                        color: AppTheme.textMuted,
+                        fontSize: AppTheme.largeSubtitleFontSize,
+                        fontWeight: AppTheme.subtitleWeight,
                       ),
+                      textDirection: TextDirection.rtl,
                     ),
-                    LayoutBuilder(
-                      builder: (context, constraints) {
-                        final percent = ((_playersCount - 3) / 7).clamp(
-                          0.0,
-                          1.0,
-                        );
-                        return Row(
-                          children: [
-                            SizedBox(
-                              width: constraints.maxWidth * percent,
-                              child: Container(
-                                height: 8,
-                                decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
-                                    colors: [
-                                      AppTheme.primaryPurple,
-                                      AppTheme.pinkPurple,
-                                    ],
-                                  ),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                              ),
-                            ),
-                          ],
-                        );
-                      },
+                    const SizedBox(height: 4),
+                    Text(
+                      'چند نفر بازی می‌کنید؟',
+                      style: TextStyle(
+                        fontFamily: AppTheme.fontFamily,
+                        color: AppTheme.textPrimary,
+                        fontSize: AppTheme.largeTitleFontSize,
+                        fontWeight: AppTheme.titleWeight,
+                      ),
+                      textDirection: TextDirection.rtl,
                     ),
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          final percent = ((_playersCount - 3) / 7).clamp(
-                            0.0,
-                            1.0,
-                          );
-                          final totalW = constraints.maxWidth;
-                          final indicatorSize = 36.0;
-                          final leftOffset =
-                              (totalW * percent - indicatorSize / 2).clamp(
-                                0.0,
-                                totalW - indicatorSize,
-                              );
-                          return Align(
-                            alignment: Alignment.centerLeft,
-                            child: Container(
-                              margin: EdgeInsets.only(left: leftOffset),
-                              width: indicatorSize,
-                              height: indicatorSize,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                gradient: const LinearGradient(
-                                  colors: [
-                                    AppTheme.primaryPurple,
-                                    AppTheme.lightPurple,
-                                  ],
-                                ),
-                                border: Border.all(
-                                  color: AppTheme.cardBg,
-                                  width: 4,
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: AppTheme.primaryPurple.withOpacity(
-                                      0.6,
-                                    ),
-                                    blurRadius: 12,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
+                  ],
+                ),
+              ),
+              const SizedBox(width: 10),
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppTheme.numberBoxHorizontalPadding,
+                  vertical: AppTheme.numberBoxVerticalPadding,
+                ),
+                decoration: BoxDecoration(
+                  color: AppTheme.bgPurple.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(AppTheme.numberBoxRadius),
+                  border: Border.all(
+                    color: AppTheme.primaryPurple.withOpacity(0.4),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppTheme.lightPurple.withValues(alpha: 0.5),
+                      blurRadius: 8,
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  textDirection: TextDirection.rtl,
+                  children: [
+                    Text(
+                      '$_playersCount',
+                      style: TextStyle(
+                        fontFamily: AppTheme.fontFamily,
+                        color: Colors.white,
+                        fontSize: AppTheme.bigNumberFontSize,
+                        fontWeight: AppTheme.titleWeight,
+                        height: 1,
+                      ),
+                      textDirection: TextDirection.rtl,
+                    ),
+                    const SizedBox(width: 10),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 6),
+                      child: Text(
+                        'نفر',
+                        style: TextStyle(
+                          fontFamily: AppTheme.fontFamily,
+                          color: Colors.white,
+                          fontSize: AppTheme.smallNumberFontSize,
+                          fontWeight: AppTheme.badgeWeight,
+                        ),
+                        textDirection: TextDirection.rtl,
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(width: 8),
-              _buildCircleButton(
-                icon: Icons.add,
-                onTap: () => _setPlayersCount(_playersCount + 1),
-              ),
+
             ],
           ),
-          const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text(
-                '۱۰ نفر',
-                style: TextStyle(color: AppTheme.textMuted, fontSize: 13),
-                textDirection: TextDirection.rtl,
-              ),
-              Text(
-                '۳ نفر (حداقل)',
-                style: TextStyle(color: AppTheme.textMuted, fontSize: 13),
-                textDirection: TextDirection.rtl,
-              ),
-            ],
+          const SizedBox(height: 24),
+          Directionality(
+            textDirection: TextDirection.rtl,
+            child: Row(
+              children: [
+                _buildRoundedSquareButton(
+                  icon: Icons.remove,
+                  onTap: () => _setPlayersCount(_playersCount - 1),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: SliderTheme(
+                    data: SliderThemeData(
+                      trackHeight: 8,
+                      activeTrackColor: AppTheme.cardBgLight,
+                      inactiveTrackColor: AppTheme.cardBgLight,
+                      thumbColor: AppTheme.bgDark,
+                      overlayColor: Colors.transparent,
+                      thumbShape: const _NeonCircleSliderThumb(),
+                    ),
+                    child: Slider(
+                      value: _playersCount.toDouble(),
+                      min: 3,
+                      max: 15,
+                      onChanged: (v) => _setPlayersCount(v.round()),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                _buildRoundedSquareButton(
+                  icon: Icons.add,
+                  onTap: () => _setPlayersCount(_playersCount + 1),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
+          Directionality(
+            textDirection: TextDirection.rtl,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '۳ نفر (حداقل)',
+                  style: TextStyle(
+                    fontFamily: AppTheme.fontFamily,
+                    color: AppTheme.textMuted,
+                    fontSize: AppTheme.subtitleFontSize,
+                    fontWeight: AppTheme.badgeWeight,
+                  ),
+                  textDirection: TextDirection.rtl,
+                ),
+                Text(
+                  '۱۵ نفر',
+                  style: TextStyle(
+                    fontFamily: AppTheme.fontFamily,
+                    color: AppTheme.textMuted,
+                    fontSize: AppTheme.subtitleFontSize,
+                    fontWeight: AppTheme.badgeWeight,
+                  ),
+                  textDirection: TextDirection.rtl,
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildCircleButton({
+  Widget _buildRoundedSquareButton({
     required IconData icon,
     required VoidCallback onTap,
   }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 56,
-        height: 56,
+        width: AppTheme.controlButtonSize,
+        height: AppTheme.controlButtonSize,
         decoration: BoxDecoration(
-          shape: BoxShape.circle,
           color: AppTheme.cardBgLight,
-          border: Border.all(color: AppTheme.primaryPurple.withOpacity(0.4)),
+          borderRadius: BorderRadius.circular(AppTheme.controlButtonRadius),
+          border: Border.all(
+            color: AppTheme.primaryPurple.withValues(alpha: 0.4),
+            width: 1,
+          ),
         ),
-        child: Icon(icon, color: AppTheme.textPrimary, size: 28),
+        child: Icon(
+          icon,
+          color: AppTheme.textPrimary,
+          size: AppTheme.controlIconSize,
+        ),
       ),
     );
   }
@@ -355,58 +387,86 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
+            textDirection: TextDirection.rtl,
             children: [
-              const IconCircle(
-                icon: Icons.group,
-                color: AppTheme.primaryPurple,
-                glow: true,
+              Container(
+                width: AppTheme.playerIconBoxSize,
+                height: AppTheme.playerIconBoxSize,
+                decoration: BoxDecoration(
+                  color: AppTheme.bgPurple.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(AppTheme.numberBoxRadius),
+                  border: Border.all(
+                    color: AppTheme.primaryPurple.withOpacity(0.4),
+                  ),
+                ),
+                child: Icon(
+                  Icons.group,
+                  color: AppTheme.lightPurple,
+                  size: AppTheme.playerIconSize,
+                ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 12),
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        const Text(
-                          'اسامی بازیکنان',
-                          style: TextStyle(
-                            color: AppTheme.textPrimary,
-                            fontSize: 19,
-                            fontWeight: FontWeight.w900,
-                          ),
-                          textDirection: TextDirection.rtl,
-                        ),
-                        const SizedBox(width: 10),
-                        BadgeTag(
-                          text: '$_playersCount نفر ثبت شده',
-                          color: AppTheme.darkPurple,
-                        ),
-                      ],
+                    Text(
+                      'اسامی بازیکنان',
+                      style: TextStyle(
+                        fontFamily: AppTheme.fontFamily,
+                        color: AppTheme.textPrimary,
+                        fontSize: AppTheme.titleFontSize,
+                        fontWeight: AppTheme.titleWeight,
+                      ),
+                      textDirection: TextDirection.rtl,
                     ),
                     const SizedBox(height: 4),
-                    const Text(
+                    Text(
                       'مدیریت نوبت و کارت‌های اختصاصی',
                       style: TextStyle(
-                        color: AppTheme.textSecondary,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
+                        fontFamily: AppTheme.fontFamily,
+                        color: AppTheme.textMuted,
+                        fontSize: AppTheme.subtitleFontSize,
+                        fontWeight: AppTheme.subtitleWeight,
                       ),
                       textDirection: TextDirection.rtl,
                     ),
                   ],
                 ),
               ),
+              const SizedBox(width: 8),
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppTheme.countBadgeHorizontalPadding,
+                  vertical: AppTheme.countBadgeVerticalPadding,
+                ),
+                decoration: BoxDecoration(
+                  color: AppTheme.bgPurple.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(AppTheme.numberBoxRadius),
+                  border: Border.all(
+                    color: AppTheme.primaryPurple.withOpacity(0.4),
+                  ),
+                ),
+                child: Text(
+                  '$_playersCount نفر ثبت شده',
+                  style: TextStyle(
+                    fontFamily: AppTheme.fontFamily,
+                    color: AppTheme.lightPurple,
+                    fontSize: AppTheme.badgeFontSize,
+                    fontWeight: AppTheme.badgeWeight,
+                  ),
+                  textDirection: TextDirection.rtl,
+                ),
+              ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 18),
           Directionality(
             textDirection: TextDirection.rtl,
             child: Wrap(
               alignment: WrapAlignment.start,
-              spacing: 10,
-              runSpacing: 10,
+              spacing: AppTheme.chipSpacing,
+              runSpacing: AppTheme.chipSpacing,
               children: [
                 for (var i = 0; i < _players.length; i++)
                   PlayerChip(
@@ -418,94 +478,99 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
             ),
           ),
           const SizedBox(height: 18),
-          Row(
-            textDirection: TextDirection.rtl,
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _nameController,
-                  textDirection: TextDirection.rtl,
-                  style: const TextStyle(
-                    color: AppTheme.textPrimary,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  textInputAction: TextInputAction.done,
-                  onSubmitted: (_) => _addPlayer(),
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 14,
-                    ),
-                    filled: true,
-                    fillColor: AppTheme.cardBgLight,
-                    hintText: 'نام بازیکن جدید....',
-                    hintStyle: const TextStyle(
-                      color: AppTheme.textMuted,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    hintTextDirection: TextDirection.rtl,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(
-                        color: AppTheme.primaryPurple.withOpacity(0.3),
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(
-                        color: AppTheme.primaryPurple.withOpacity(0.3),
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(
-                        color: AppTheme.primaryPurple.withOpacity(0.8),
-                        width: 1.5,
-                      ),
-                    ),
-                  ),
-                ),
+          Container(
+            padding: EdgeInsets.all(AppTheme.addRowPadding),
+            decoration: BoxDecoration(
+              color: AppTheme.cardBgLight,
+              borderRadius: BorderRadius.circular(AppTheme.addRowRadius),
+              border: Border.all(
+                color: AppTheme.primaryPurple.withValues(alpha: 0.35),
+                width: 1,
               ),
-              const SizedBox(width: 10),
-              GestureDetector(
-                onTap: _addPlayer,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 22,
-                    vertical: 14,
-                  ),
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [AppTheme.primaryPurple, AppTheme.lightPurple],
-                    ),
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppTheme.primaryPurple.withOpacity(0.4),
-                        blurRadius: 12,
+            ),
+            child: Row(
+              textDirection: TextDirection.rtl,
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: TextField(
+                      controller: _nameController,
+                      textDirection: TextDirection.rtl,
+                      style: TextStyle(
+                        fontFamily: AppTheme.fontFamily,
+                        color: AppTheme.textPrimary,
+                        fontSize: AppTheme.inputFontSize,
+                        fontWeight: AppTheme.inputWeight,
                       ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Text(
-                        'افزودن',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w800,
+                      textInputAction: TextInputAction.done,
+                      onSubmitted: (_) => _addPlayer(),
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        hintText: 'نام بازیکن جدید....',
+                        hintStyle: TextStyle(
+                          fontFamily: AppTheme.fontFamily,
+                          color: AppTheme.textMuted,
+                          fontSize: AppTheme.inputFontSize,
+                          fontWeight: AppTheme.subtitleWeight,
                         ),
+                        hintTextDirection: TextDirection.rtl,
+                        isDense: true,
+                        contentPadding: EdgeInsets.zero,
                       ),
-                      SizedBox(width: 6),
-                      Icon(Icons.add, color: Colors.white, size: 22),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(width: 6),
+                GestureDetector(
+                  onTap: _addPlayer,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppTheme.addButtonHorizontalPadding,
+                      vertical: AppTheme.addButtonVerticalPadding,
+                    ),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [AppTheme.primaryPurple, AppTheme.lightPurple],
+                      ),
+                      borderRadius: BorderRadius.circular(
+                        AppTheme.addButtonRadius,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppTheme.primaryPurple.withValues(alpha: 0.4),
+                          blurRadius: 12,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      textDirection: TextDirection.rtl,
+                      children: [
+                        Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: AppTheme.addButtonIconSize,
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          'افزودن',
+                          style: TextStyle(
+                            fontFamily: AppTheme.fontFamily,
+                            color: Colors.white,
+                            fontSize: AppTheme.buttonFontSize,
+                            fontWeight: AppTheme.buttonWeight,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -533,23 +598,25 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
-              children: const [
+              children: [
                 Text(
                   'تعداد جاسوس‌ها',
                   style: TextStyle(
+                    fontFamily: AppTheme.fontFamily,
                     color: AppTheme.textPrimary,
-                    fontSize: 19,
-                    fontWeight: FontWeight.w900,
+                    fontSize: AppTheme.titleFontSize,
+                    fontWeight: AppTheme.titleWeight,
                   ),
                   textDirection: TextDirection.rtl,
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
                   'افرادی که مکان را نمی‌دانند',
                   style: TextStyle(
+                    fontFamily: AppTheme.fontFamily,
                     color: AppTheme.textSecondary,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
+                    fontSize: AppTheme.subtitleFontSize,
+                    fontWeight: AppTheme.subtitleWeight,
                   ),
                   textDirection: TextDirection.rtl,
                 ),
@@ -581,10 +648,11 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                   child: Center(
                     child: Text(
                       '$_spyCount',
-                      style: const TextStyle(
+                      style: TextStyle(
+                        fontFamily: AppTheme.fontFamily,
                         color: AppTheme.textPrimary,
                         fontSize: 24,
-                        fontWeight: FontWeight.w900,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),
@@ -642,12 +710,13 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        const Text(
+                        Text(
                           'زمان هر راند بازی',
                           style: TextStyle(
+                            fontFamily: AppTheme.fontFamily,
                             color: AppTheme.textPrimary,
                             fontSize: 19,
-                            fontWeight: FontWeight.w900,
+                            fontWeight: FontWeight.w700,
                           ),
                           textDirection: TextDirection.rtl,
                         ),
@@ -709,9 +778,10 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
         child: Text(
           label,
           style: TextStyle(
+            fontFamily: AppTheme.fontFamily,
             color: active ? Colors.white : AppTheme.textPrimary,
             fontSize: 15,
-            fontWeight: FontWeight.w800,
+            fontWeight: FontWeight.w700,
           ),
           textDirection: TextDirection.rtl,
         ),
@@ -742,12 +812,13 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        const Text(
+                        Text(
                           'دسته‌بندی کلمات',
                           style: TextStyle(
+                            fontFamily: AppTheme.fontFamily,
                             color: AppTheme.textPrimary,
                             fontSize: 19,
-                            fontWeight: FontWeight.w900,
+                            fontWeight: FontWeight.w700,
                           ),
                           textDirection: TextDirection.rtl,
                         ),
@@ -759,9 +830,10 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                       ],
                     ),
                     const SizedBox(height: 4),
-                    const Text(
+                    Text(
                       'انتخاب موضوعات بازی و افزودن کلمه',
                       style: TextStyle(
+                        fontFamily: AppTheme.fontFamily,
                         color: AppTheme.textSecondary,
                         fontSize: 13,
                         fontWeight: FontWeight.w500,
@@ -798,6 +870,7 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
             child: Text(
               '+۱۴۰ کلمه',
               style: TextStyle(
+                fontFamily: AppTheme.fontFamily,
                 color: AppTheme.textMuted,
                 fontSize: 13,
                 fontWeight: FontWeight.w700,
@@ -845,6 +918,7 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
               child: Text(
                 'قوانین جانبی و سناریو',
                 style: TextStyle(
+                  fontFamily: AppTheme.fontFamily,
                   color: AppTheme.textMuted,
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
@@ -901,17 +975,19 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
             children: [
               Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
+                  fontFamily: AppTheme.fontFamily,
                   color: AppTheme.textPrimary,
                   fontSize: 16,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                 ),
                 textDirection: TextDirection.rtl,
               ),
               const SizedBox(height: 4),
               Text(
                 subtitle,
-                style: const TextStyle(
+                style: TextStyle(
+                  fontFamily: AppTheme.fontFamily,
                   color: AppTheme.textSecondary,
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
@@ -934,6 +1010,49 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
         ),
       ],
     );
+  }
+}
+
+class _NeonCircleSliderThumb extends SliderComponentShape {
+  const _NeonCircleSliderThumb();
+
+  @override
+  Size getPreferredSize(bool isEnabled, bool isDiscrete) {
+    return const Size(30, 30);
+  }
+
+  @override
+  void paint(
+    PaintingContext context,
+    Offset center, {
+    required Animation<double> activationAnimation,
+    required Animation<double> enableAnimation,
+    required bool isDiscrete,
+    required TextPainter labelPainter,
+    required RenderBox parentBox,
+    required SliderThemeData sliderTheme,
+    required TextDirection textDirection,
+    required double value,
+    required double textScaleFactor,
+    required Size sizeWithOverflow,
+  }) {
+    final canvas = context.canvas;
+    const radius = 15.0;
+    const borderWidth = 3.0;
+
+    final shadowPaint = Paint()
+      ..color = AppTheme.lightPurple.withValues(alpha: 0.6)
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8);
+    canvas.drawCircle(center, radius + 2, shadowPaint);
+
+    final borderPaint = Paint()
+      ..color = AppTheme.lightPurple
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = borderWidth;
+    canvas.drawCircle(center, radius, borderPaint);
+
+    final fillPaint = Paint()..color = AppTheme.bgDark;
+    canvas.drawCircle(center, radius - borderWidth / 2, fillPaint);
   }
 }
 
@@ -973,7 +1092,8 @@ class CategoryChip extends StatelessWidget {
           const SizedBox(width: 8),
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
+              fontFamily: AppTheme.fontFamily,
               color: AppTheme.textPrimary,
               fontSize: 14,
               fontWeight: FontWeight.w700,

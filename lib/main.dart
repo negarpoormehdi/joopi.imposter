@@ -15,6 +15,18 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'جاسوس بازی',
       theme: AppTheme.darkTheme(),
+      builder: (context, child) {
+        final defaultTextStyle = DefaultTextStyle.of(context);
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: DefaultTextStyle(
+            style: defaultTextStyle.style.copyWith(
+              fontFamily: AppTheme.fontFamily,
+            ),
+            child: child ?? const SizedBox.shrink(),
+          ),
+        );
+      },
       home: const GameSettingsScreen(),
     );
   }
