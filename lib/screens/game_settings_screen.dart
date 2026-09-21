@@ -392,14 +392,14 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                 height: AppTheme.playerIconBoxSize,
                 decoration: BoxDecoration(
                   color: AppTheme.bgPurple.withOpacity(0.8),
-                  borderRadius: BorderRadius.circular(AppTheme.numberBoxRadius),
+                  borderRadius: BorderRadius.circular(20),
                   border: Border.all(
                     color: AppTheme.primaryPurple.withOpacity(0.4),
                   ),
                 ),
                 child: Icon(
                   Icons.group,
-                  color: AppTheme.lightPurple,
+                  color: AppTheme.textSecondary,
                   size: AppTheme.playerIconSize,
                 ),
               ),
@@ -449,7 +449,7 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                   '${_playersCount.toFa} نفر ثبت شده',
                   style: TextStyle(
                     fontFamily: AppTheme.fontFamily,
-                    color: AppTheme.lightPurple,
+                    color: AppTheme.textSecondary,
                     fontSize: AppTheme.badgeFontSize,
                     fontWeight: AppTheme.badgeWeight,
                   ),
@@ -479,7 +479,7 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
           Container(
             padding: EdgeInsets.all(AppTheme.addRowPadding),
             decoration: BoxDecoration(
-              color: AppTheme.cardBgLight,
+              color: AppTheme.bgDark,
               borderRadius: BorderRadius.circular(AppTheme.addRowRadius),
               border: Border.all(
                 color: AppTheme.primaryPurple.withValues(alpha: 0.35),

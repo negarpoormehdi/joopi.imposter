@@ -304,14 +304,19 @@ class PlayerChip extends StatelessWidget {
         textDirection: TextDirection.rtl,
         children: [
           if (onRemove != null)
-            GestureDetector(
-              onTap: onRemove,
-              child: Icon(
-                Icons.close,
-                color: AppTheme.textMuted,
-                size: AppTheme.chipCloseIconSize,
+
+          Container(
+            width: AppTheme.chipDotSize,
+            height: AppTheme.chipDotSize,
+            decoration: BoxDecoration(
+              color: dotColor,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: AppTheme.bgDark.withValues(alpha: 0.5),
+                width: 1,
               ),
             ),
+          ),
           const SizedBox(width: 8),
           Text(
             name,
@@ -323,17 +328,14 @@ class PlayerChip extends StatelessWidget {
             ),
             textDirection: TextDirection.rtl,
           ),
+
           const SizedBox(width: 8),
-          Container(
-            width: AppTheme.chipDotSize,
-            height: AppTheme.chipDotSize,
-            decoration: BoxDecoration(
-              color: dotColor,
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: AppTheme.bgDark.withValues(alpha: 0.5),
-                width: 1,
-              ),
+          GestureDetector(
+            onTap: onRemove,
+            child: Icon(
+              Icons.close,
+              color: AppTheme.textMuted,
+              size: AppTheme.chipCloseIconSize,
             ),
           ),
         ],
