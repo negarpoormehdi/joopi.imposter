@@ -158,7 +158,7 @@ class _RoleDistributionFlowScreenState extends State<RoleDistributionFlowScreen>
                   children: [
                     const TextSpan(text: 'بازیکن  '),
                     TextSpan(
-                      text: '${_currentPlayerIndex + 1}',
+                      text: '${(_currentPlayerIndex + 1).toFa}',
                       style: const TextStyle(
                         color: AppTheme.lightPurple,
                         fontSize: 22,
@@ -166,7 +166,7 @@ class _RoleDistributionFlowScreenState extends State<RoleDistributionFlowScreen>
                     ),
                     const TextSpan(text: '  از  '),
                     TextSpan(
-                      text: '$_total',
+                      text: '${_total.toFa}',
                       style: const TextStyle(
                         color: AppTheme.textMuted,
                         fontSize: 18,

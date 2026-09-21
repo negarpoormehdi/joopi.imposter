@@ -131,7 +131,7 @@ class _TopicsScreenState extends State<TopicsScreen> {
               BottomActionButton(
                 title: 'تایید و ادامه بازی',
                 subtitle:
-                    '${_selectedCount * 20}+ کلمه فعال • $_selectedCount دسته‌بندی فعال',
+                    '${(_selectedCount * 20).toFa}+ کلمه فعال • ${_selectedCount.toFa} دسته‌بندی فعال',
                 leftIcon: Icons.group,
                 rightIcon: Icons.arrow_back,
                 leftColor: AppTheme.lightPurple,

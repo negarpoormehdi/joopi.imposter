@@ -86,8 +86,8 @@ class _GameSettingsRandomScreenState extends State<GameSettingsRandomScreen> {
           SectionHeader(
             title: 'چند نفر بازی می‌کنید؟',
             subtitle: 'تعداد کل بازیکن‌ها',
-            leadingBadge: const BadgeTag(
-              text: '۵ نفر',
+            leadingBadge: BadgeTag(
+              text: '${_playersCount.toFa} نفر',
               color: AppTheme.primaryPurple,
               icon: Icons.water_drop_outlined,
             ),
@@ -465,7 +465,7 @@ class _GameSettingsRandomScreenState extends State<GameSettingsRandomScreen> {
                   width: 40,
                   alignment: Alignment.center,
                   child: Text(
-                    '$_spyCount',
+                    '${_spyCount.toFa}',
                     style: const TextStyle(
                       color: AppTheme.textPrimary,
                       fontSize: 24,
@@ -539,7 +539,7 @@ class _GameSettingsRandomScreenState extends State<GameSettingsRandomScreen> {
                         ),
                         const SizedBox(width: 10),
                         BadgeTag(
-                          text: '$_roundTime دقیقه',
+                          text: '${_roundTime.toFa} دقیقه',
                           color: AppTheme.darkPurple,
                         ),
                       ],

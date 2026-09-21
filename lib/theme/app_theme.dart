@@ -68,7 +68,7 @@ class AppTheme {
   static const double countBadgeHorizontalPadding = 14;
   static const double countBadgeVerticalPadding = 8;
 
-  static const String fontFamily = 'IranSans';
+  static const String fontFamily = 'Vazirmatn';
 
   static TextTheme _buildTextTheme(TextTheme base) {
     return base
@@ -323,4 +323,36 @@ class AppTheme {
       ),
     );
   }
+}
+
+const Map<String, String> _persianDigits = {
+  '0': '۰',
+  '1': '۱',
+  '2': '۲',
+  '3': '۳',
+  '4': '۴',
+  '5': '۵',
+  '6': '۶',
+  '7': '۷',
+  '8': '۸',
+  '9': '۹',
+};
+
+extension PersianNumberExtension on String {
+  String get toFa {
+    if (isEmpty) return this;
+    final buffer = StringBuffer();
+    for (final ch in split('')) {
+      buffer.write(_persianDigits[ch] ?? ch);
+    }
+    return buffer.toString();
+  }
+}
+
+extension PersianNumberIntExtension on int {
+  String get toFa => toString().toFa;
+}
+
+extension PersianNumberNumExtension on num {
+  String get toFa => toString().toFa;
 }

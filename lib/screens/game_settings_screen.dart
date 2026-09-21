@@ -200,7 +200,6 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -254,7 +253,7 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                   textDirection: TextDirection.rtl,
                   children: [
                     Text(
-                      '$_playersCount',
+                      '${_playersCount.toFa}',
                       style: TextStyle(
                         fontFamily: AppTheme.fontFamily,
                         color: Colors.white,
@@ -281,7 +280,6 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                   ],
                 ),
               ),
-
             ],
           ),
           const SizedBox(height: 24),
@@ -448,7 +446,7 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                   ),
                 ),
                 child: Text(
-                  '$_playersCount نفر ثبت شده',
+                  '${_playersCount.toFa} نفر ثبت شده',
                   style: TextStyle(
                     fontFamily: AppTheme.fontFamily,
                     color: AppTheme.lightPurple,
@@ -647,7 +645,7 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                   width: 40,
                   child: Center(
                     child: Text(
-                      '$_spyCount',
+                      '${_spyCount.toFa}',
                       style: TextStyle(
                         fontFamily: AppTheme.fontFamily,
                         color: AppTheme.textPrimary,
@@ -722,7 +720,7 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                         ),
                         const SizedBox(width: 10),
                         BadgeTag(
-                          text: '$_roundTime دقیقه',
+                          text: '${_roundTime.toFa} دقیقه',
                           color: AppTheme.darkPurple,
                         ),
                       ],

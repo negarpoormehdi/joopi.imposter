@@ -99,7 +99,8 @@ class _GameplayScreenState extends State<GameplayScreen> {
   String get _formattedTime {
     final mins = _timeSeconds ~/ 60;
     final secs = _timeSeconds % 60;
-    return '${mins.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}';
+    return '${mins.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}'
+        .toFa;
   }
 
   void _togglePause() {
@@ -669,11 +670,14 @@ class _GameplayScreenState extends State<GameplayScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     BadgeTag(
-                      text: '$totalPlayers بازیکن',
+                      text: '${totalPlayers.toFa} بازیکن',
                       color: AppTheme.primaryPurple,
                     ),
                     const SizedBox(width: 10),
-                    BadgeTag(text: '$spyCount جاسوس', color: AppTheme.pink),
+                    BadgeTag(
+                      text: '${spyCount.toFa} جاسوس',
+                      color: AppTheme.pink,
+                    ),
                   ],
                 ),
               ],
