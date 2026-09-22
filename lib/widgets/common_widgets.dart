@@ -21,61 +21,39 @@ class AppHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(18, 16, 18, 18),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            AppTheme.primaryPurple.withOpacity(0.08),
-            Colors.transparent,
-          ],
-        ),
-      ),
-      child: Directionality(
-        textDirection: TextDirection.rtl,
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 14, 20, 16),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if (onBack != null)
-              _HeaderNavButton(
-                icon: navIcon ?? Icons.arrow_back_ios_new,
-                onTap: onBack!,
-              )
-            else
-              const _HeaderNavButton(
-                icon: Icons.arrow_forward_ios,
-                onTap: null,
-                isPlaceholder: true,
-              ),
-            const SizedBox(width: 14),
+            Icon(icon, color: AppTheme.textPrimary, size: 26),
+            const SizedBox(width: 12),
             Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
                     title,
-                    textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontFamily: AppTheme.fontFamily,
                       color: AppTheme.textPrimary,
-                      fontSize: 27,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 0.2,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w800,
                       height: 1.1,
                     ),
                     textDirection: TextDirection.rtl,
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 3),
                   Text(
                     subtitle,
-                    textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontFamily: AppTheme.fontFamily,
-                      color: AppTheme.textSecondary,
-                      fontSize: 13.5,
-                      fontWeight: FontWeight.w600,
+                      color: AppTheme.textMuted,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
                       height: 1.2,
                     ),
                     textDirection: TextDirection.rtl,
@@ -83,8 +61,11 @@ class AppHeader extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(width: 14),
-            _HeaderLogoIcon(icon: icon),
+            if (onBack != null)
+              _MinimalNavButton(
+                icon: navIcon ?? Icons.arrow_back_ios_new,
+                onTap: onBack!,
+              ),
           ],
         ),
       ),
@@ -92,118 +73,21 @@ class AppHeader extends StatelessWidget {
   }
 }
 
-class _HeaderLogoIcon extends StatelessWidget {
+class _MinimalNavButton extends StatelessWidget {
   final IconData icon;
+  final VoidCallback onTap;
 
-  const _HeaderLogoIcon({required this.icon});
+  const _MinimalNavButton({required this.icon, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 68,
-      height: 68,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        gradient: const LinearGradient(
-          colors: [
-            AppTheme.lightPurple,
-            AppTheme.primaryPurple,
-            AppTheme.pinkPurple,
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          stops: [0.0, 0.5, 1.0],
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AppTheme.pinkPurple.withOpacity(0.35),
-            blurRadius: 24,
-            spreadRadius: 3,
-          ),
-          BoxShadow(
-            color: AppTheme.primaryPurple.withOpacity(0.3),
-            blurRadius: 14,
-            spreadRadius: 1,
-          ),
-        ],
-        border: Border.all(color: Colors.white.withOpacity(0.18), width: 1.5),
-      ),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: RadialGradient(
-                colors: [Colors.white.withOpacity(0.22), Colors.transparent],
-                stops: const [0.0, 0.6],
-              ),
-            ),
-          ),
-          Icon(
-            icon,
-            color: Colors.white,
-            size: 34,
-            shadows: const [
-              Shadow(
-                color: Colors.black26,
-                blurRadius: 4,
-                offset: Offset(0, 2),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _HeaderNavButton extends StatelessWidget {
-  final IconData icon;
-  final VoidCallback? onTap;
-  final bool isPlaceholder;
-
-  const _HeaderNavButton({
-    required this.icon,
-    this.onTap,
-    this.isPlaceholder = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final child = Container(
-      width: 58,
-      height: 58,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: AppTheme.cardBg,
-        border: Border.all(
-          color: AppTheme.primaryPurple.withOpacity(0.4),
-          width: 1.4,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.25),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Icon(
-        icon,
-        color: isPlaceholder && onTap == null
-            ? AppTheme.textMuted.withOpacity(0.5)
-            : AppTheme.textPrimary,
-        size: 23,
-      ),
-    );
-
-    if (onTap == null) return child;
-
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
-      child: child,
+      child: Padding(
+        padding: const EdgeInsets.all(4),
+        child: Icon(icon, color: AppTheme.textSecondary, size: 20),
+      ),
     );
   }
 }
@@ -251,9 +135,7 @@ class BadgeTag extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppTheme.bgPurple.withOpacity(0.8),
         borderRadius: BorderRadius.circular(AppTheme.numberBoxRadius),
-        border: Border.all(
-          color: AppTheme.primaryPurple.withOpacity(0.4),
-        ),
+        border: Border.all(color: AppTheme.primaryPurple.withOpacity(0.4)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -264,7 +146,7 @@ class BadgeTag extends StatelessWidget {
           ],
           Text(
             text,
-            style:  TextStyle(
+            style: TextStyle(
               fontFamily: AppTheme.fontFamily,
               color: AppTheme.textSecondary,
               fontSize: AppTheme.subtitleFontSize,
@@ -310,19 +192,18 @@ class PlayerChip extends StatelessWidget {
         textDirection: TextDirection.rtl,
         children: [
           if (onRemove != null)
-
-          Container(
-            width: AppTheme.chipDotSize,
-            height: AppTheme.chipDotSize,
-            decoration: BoxDecoration(
-              color: dotColor,
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: AppTheme.bgDark.withValues(alpha: 0.5),
-                width: 1,
+            Container(
+              width: AppTheme.chipDotSize,
+              height: AppTheme.chipDotSize,
+              decoration: BoxDecoration(
+                color: dotColor,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: AppTheme.bgDark.withValues(alpha: 0.5),
+                  width: 1,
+                ),
               ),
             ),
-          ),
           const SizedBox(width: 4),
           Text(
             name,
@@ -477,94 +358,57 @@ class BottomActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.fromLTRB(16, 8, 16, 24),
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [AppTheme.cardBg, AppTheme.cardBgLight],
-            begin: Alignment.centerRight,
-            end: Alignment.centerLeft,
+      behavior: HitTestBehavior.opaque,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
+          decoration: BoxDecoration(
+            color: AppTheme.primaryPurple,
+            borderRadius: BorderRadius.circular(24),
           ),
-          borderRadius: BorderRadius.circular(32),
-          border: Border.all(color: AppTheme.primaryPurple.withOpacity(0.4)),
-          boxShadow: [
-            BoxShadow(
-              color: AppTheme.primaryPurple.withOpacity(0.2),
-              blurRadius: 20,
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  colors: [leftColor, AppTheme.lightPurple],
+          child: Directionality(
+            textDirection: TextDirection.rtl,
+            child: Row(
+              children: [
+                Icon(leftIcon, color: Colors.white, size: 22),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          fontFamily: AppTheme.fontFamily,
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                          height: 1.1,
+                        ),
+                        textDirection: TextDirection.rtl,
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        subtitle,
+                        style: TextStyle(
+                          fontFamily: AppTheme.fontFamily,
+                          color: Colors.white.withOpacity(0.72),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          height: 1.2,
+                        ),
+                        textDirection: TextDirection.rtl,
+                      ),
+                    ],
+                  ),
                 ),
-                boxShadow: showLeftGlow
-                    ? [
-                        BoxShadow(
-                          color: leftColor.withOpacity(0.5),
-                          blurRadius: 16,
-                          spreadRadius: 2,
-                        ),
-                      ]
-                    : null,
-              ),
-              child: Icon(leftIcon, color: Colors.white, size: 28),
+                const SizedBox(width: 10),
+                Icon(rightIcon, color: Colors.white.withOpacity(0.9), size: 20),
+              ],
             ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontFamily: AppTheme.fontFamily,
-                      color: AppTheme.textPrimary,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w900,
-                    ),
-                    textDirection: TextDirection.rtl,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    subtitle,
-                    style: const TextStyle(
-                      fontFamily: AppTheme.fontFamily,
-                      color: AppTheme.textSecondary,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    textDirection: TextDirection.rtl,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 16),
-            Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: rightColor.withOpacity(0.2),
-                boxShadow: showRightGlow
-                    ? [
-                        BoxShadow(
-                          color: rightColor.withOpacity(0.4),
-                          blurRadius: 12,
-                        ),
-                      ]
-                    : null,
-              ),
-              child: Icon(rightIcon, color: rightColor, size: 28),
-            ),
-          ],
+          ),
         ),
       ),
     );
