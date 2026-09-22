@@ -28,8 +28,8 @@ class _RoleDistributionFlowScreenState extends State<RoleDistributionFlowScreen>
   GamePlayer get _current => widget.gameState.players[_currentPlayerIndex];
   int get _total => widget.gameState.playerCount;
 
-  static const double _revealThreshold = -180;
-  static const double _revealOffset = -340;
+  static const double _revealThreshold = -260;
+  static const double _revealOffset = -420;
 
   @override
   void initState() {
@@ -54,12 +54,17 @@ class _RoleDistributionFlowScreenState extends State<RoleDistributionFlowScreen>
     super.dispose();
   }
 
-  void _animateSnap(double from, double to) {
+  void _animateSnap(double from, double to, {VoidCallback? onCompleted}) {
     _snapAnimation = Tween<double>(begin: from, end: to).animate(
       CurvedAnimation(parent: _snapController, curve: Curves.easeOutCubic),
     );
     _snapController.reset();
-    _snapController.forward();
+    _snapController.forward().then((_) {
+      if (mounted) {
+        setState(() => _dragOffset = to);
+        onCompleted?.call();
+      }
+    });
   }
 
   void _finishRevealAndAdvance() {
@@ -103,10 +108,13 @@ class _RoleDistributionFlowScreenState extends State<RoleDistributionFlowScreen>
     if (_showNextButton) return;
     if (_isRevealed) return;
     if (_dragOffset <= _revealThreshold) {
-      _animateSnap(_dragOffset, _revealOffset);
-      Future.delayed(const Duration(milliseconds: 260), () {
-        if (mounted) _finishRevealAndAdvance();
-      });
+      _animateSnap(
+        _dragOffset,
+        _revealOffset,
+        onCompleted: () {
+          if (mounted) _finishRevealAndAdvance();
+        },
+      );
     } else {
       _animateSnap(_dragOffset, 0.0);
     }
@@ -123,8 +131,8 @@ class _RoleDistributionFlowScreenState extends State<RoleDistributionFlowScreen>
         child: Stack(
           children: [
             _buildRevealedBackground(size),
-            _buildBottomFixedSection(),
             _buildPurpleSheet(size),
+            _buildBottomFixedSection(),
             _buildTopBar(),
           ],
         ),
