@@ -18,6 +18,7 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
   int _roundTime = 5;
   bool _showLocation = true;
   bool _soundOn = true;
+  bool _paintCanvasMode = false;
 
   final List<String> _defaultNames = const [
     'علی',
@@ -131,6 +132,9 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
       spyCount: _spyCount,
       roundTimeMinutes: _roundTime,
       activeCategories: _activeCategories,
+      paintCanvasModeEnabled: _paintCanvasMode,
+      showLocationListForSpy: _showLocation,
+      soundEnabled: _soundOn,
     ).build();
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -392,7 +396,9 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                 height: AppTheme.playerIconBoxSize,
                 decoration: BoxDecoration(
                   color: AppTheme.bgPurple.withOpacity(0.8),
-                  borderRadius: BorderRadius.circular(AppTheme.playerIconBoxRadius),
+                  borderRadius: BorderRadius.circular(
+                    AppTheme.playerIconBoxRadius,
+                  ),
                   border: Border.all(
                     color: AppTheme.primaryPurple.withOpacity(0.4),
                   ),
@@ -665,9 +671,7 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
         ),
         child: Stack(
           alignment: Alignment.center,
-          children: [
-            SvgPicture.asset('assets/spy.svg'),
-          ],
+          children: [SvgPicture.asset('assets/spy.svg')],
         ),
       ),
     );
@@ -793,7 +797,9 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                 height: AppTheme.playerIconBoxSize,
                 decoration: BoxDecoration(
                   color: AppTheme.bgPurple.withOpacity(0.8),
-                  borderRadius: BorderRadius.circular(AppTheme.playerIconBoxRadius),
+                  borderRadius: BorderRadius.circular(
+                    AppTheme.playerIconBoxRadius,
+                  ),
                   border: Border.all(
                     color: AppTheme.primaryPurple.withOpacity(0.4),
                   ),
@@ -822,7 +828,6 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                           ),
                           textDirection: TextDirection.rtl,
                         ),
-
                       ],
                     ),
                   ],
@@ -911,7 +916,9 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                 height: AppTheme.playerIconBoxSize,
                 decoration: BoxDecoration(
                   color: AppTheme.bgPurple.withOpacity(0.8),
-                  borderRadius: BorderRadius.circular(AppTheme.playerIconBoxRadius),
+                  borderRadius: BorderRadius.circular(
+                    AppTheme.playerIconBoxRadius,
+                  ),
                   border: Border.all(
                     color: AppTheme.primaryPurple.withOpacity(0.4),
                   ),
@@ -947,7 +954,6 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                       ),
                       textDirection: TextDirection.rtl,
                     ),
-
                   ],
                 ),
               ),
@@ -1047,6 +1053,15 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
           Container(height: 1, color: AppTheme.cardBgLight),
           const SizedBox(height: 16),
           _buildOptionRow(
+            title: 'بوم نقاشی جاسوس (مود نقاشی)',
+            subtitle: 'به جای گفتگو، هر بازیکن روی بوم نقاشی می‌کند (غیرفعال)',
+            value: _paintCanvasMode,
+            onChanged: (v) => setState(() => _paintCanvasMode = v),
+          ),
+          const SizedBox(height: 16),
+          Container(height: 1, color: AppTheme.cardBgLight),
+          const SizedBox(height: 16),
+          _buildOptionRow(
             title: 'لرزش و افکت‌های صوتی',
             subtitle: 'هنگام تحویل گوشی به نفر بعدی و پایان زمان',
             value: _soundOn,
@@ -1118,8 +1133,6 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
             inactiveTrackColor: AppTheme.cardBgLight,
           ),
         ),
-
-
       ],
     );
   }

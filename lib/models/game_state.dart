@@ -25,6 +25,9 @@ class GameState {
   final int roundTimeMinutes;
   final String location;
   final List<String> activeCategories;
+  final bool paintCanvasModeEnabled;
+  final bool showLocationListForSpy;
+  final bool soundEnabled;
 
   const GameState({
     required this.players,
@@ -32,6 +35,9 @@ class GameState {
     required this.roundTimeMinutes,
     required this.location,
     required this.activeCategories,
+    required this.paintCanvasModeEnabled,
+    required this.showLocationListForSpy,
+    required this.soundEnabled,
   });
 
   int get playerCount => players.length;
@@ -43,12 +49,18 @@ class GameStateBuilder {
   int spyCount;
   int roundTimeMinutes;
   Set<String> activeCategories;
+  bool paintCanvasModeEnabled;
+  bool showLocationListForSpy;
+  bool soundEnabled;
 
   GameStateBuilder({
     required this.playerNames,
     required this.spyCount,
     required this.roundTimeMinutes,
     required this.activeCategories,
+    required this.paintCanvasModeEnabled,
+    required this.showLocationListForSpy,
+    required this.soundEnabled,
   });
 
   static const _playerColors = [
@@ -66,29 +78,81 @@ class GameStateBuilder {
 
   static const _locationsMap = {
     'مکان‌ها': [
-      'رستوران لوکس', 'پارک تفریحی', 'فرودگاه', 'هتل پنج ستاره', 'بیمارستان',
-      'موزه هنر', 'کتابخانه بزرگ', 'باشگاه ورزشی', 'سینما', 'کافه محبوب',
-      'شهرداری', 'دانشگاه', 'سوپرمارکت', 'ایستگاه مترو', 'فرودگاه',
-      'ساحل دریا', 'کوهستان', 'باغ موزه', 'تئاتر شهر', 'استخر شنا',
+      'رستوران لوکس',
+      'پارک تفریحی',
+      'فرودگاه',
+      'هتل پنج ستاره',
+      'بیمارستان',
+      'موزه هنر',
+      'کتابخانه بزرگ',
+      'باشگاه ورزشی',
+      'سینما',
+      'کافه محبوب',
+      'شهرداری',
+      'دانشگاه',
+      'سوپرمارکت',
+      'ایستگاه مترو',
+      'فرودگاه',
+      'ساحل دریا',
+      'کوهستان',
+      'باغ موزه',
+      'تئاتر شهر',
+      'استخر شنا',
     ],
     'مشاغل': [
-      'پزشک جراح', 'معلم مدرسه', 'مهندس معماری', 'هنرمند نقاش', 'راننده تاکسی',
-      'آشپز سرآشپز', 'کاربر شبکه', 'موسیقیدان', 'وکیل دادگستری', 'روزنامه‌نگار',
-      'پلیس', 'آتش نشان', 'خلبان هواپیما', 'مهندس نرم‌افزار', 'پزشک دامپزشک',
+      'پزشک جراح',
+      'معلم مدرسه',
+      'مهندس معماری',
+      'هنرمند نقاش',
+      'راننده تاکسی',
+      'آشپز سرآشپز',
+      'کاربر شبکه',
+      'موسیقیدان',
+      'وکیل دادگستری',
+      'روزنامه‌نگار',
+      'پلیس',
+      'آتش نشان',
+      'خلبان هواپیما',
+      'مهندس نرم‌افزار',
+      'پزشک دامپزشک',
     ],
     'اشیاء': [
-      'موبایل هوشمند', 'لپ‌تاپ', 'ساعت مچی گران‌بها', 'دوربین عکاسی', 'گیتار الکتریک',
-      'ماکروفر', 'ماشین لباسشویی', 'یخچال فریزر', 'لپ‌تاپ گیمینگ', 'هندزفری بلوتوث',
+      'موبایل هوشمند',
+      'لپ‌تاپ',
+      'ساعت مچی گران‌بها',
+      'دوربین عکاسی',
+      'گیتار الکتریک',
+      'ماکروفر',
+      'ماشین لباسشویی',
+      'یخچال فریزر',
+      'لپ‌تاپ گیمینگ',
+      'هندزفری بلوتوث',
     ],
     'حیوانات': [
-      'شیر آفریقا', 'فیل بزرگ', 'خرس قطبی', 'حیوان غریب طاووس', 'گورخر جنگل',
-      'دلفین اقیانوس', 'کنگورو استرالیا', 'کاپیبارا', 'پاندا سرخ', 'دریای مردابی',
+      'شیر آفریقا',
+      'فیل بزرگ',
+      'خرس قطبی',
+      'حیوان غریب طاووس',
+      'گورخر جنگل',
+      'دلفین اقیانوس',
+      'کنگورو استرالیا',
+      'کاپیبارا',
+      'پاندا سرخ',
+      'دریای مردابی',
     ],
   };
 
   static const _defaultLocations = [
-    'رستوران لوکس', 'فرودگاه', 'هتل پنج ستاره', 'کافه محبوب', 'بیمارستان',
-    'دانشگاه', 'سوپرمارکت', 'سینما', 'موزه هنر', 'پارک تفریحی',
+    'رستوران لوکس',
+    'فرودگاه',
+    'هتل پنج ستاره',
+    'کافه محبوب',
+    'بیمارستان',
+    'دانشگاه',
+    'سوپرمارکت',
+    'سینما',
+    'موزه هنر',
+    'پارک تفریحی',
   ];
 
   GameState build() {
@@ -100,12 +164,16 @@ class GameStateBuilder {
 
     final spyIndices = shuffledIndices.take(spyCount).toSet();
 
-    final categories = activeCategories.isEmpty ? {'مکان‌ها'} : activeCategories;
+    final categories = activeCategories.isEmpty
+        ? {'مکان‌ها'}
+        : activeCategories;
     final allLocations = <String>[];
     for (final c in categories) {
       allLocations.addAll(_locationsMap[c] ?? _defaultLocations);
     }
-    final locationPool = allLocations.isEmpty ? _defaultLocations : allLocations;
+    final locationPool = allLocations.isEmpty
+        ? _defaultLocations
+        : allLocations;
     final selectedLocation = locationPool[random.nextInt(locationPool.length)];
 
     final players = List<GamePlayer>.generate(names.length, (i) {
@@ -124,6 +192,9 @@ class GameStateBuilder {
       roundTimeMinutes: roundTimeMinutes,
       location: selectedLocation,
       activeCategories: categories.toList(),
+      paintCanvasModeEnabled: paintCanvasModeEnabled,
+      showLocationListForSpy: showLocationListForSpy,
+      soundEnabled: soundEnabled,
     );
   }
 }

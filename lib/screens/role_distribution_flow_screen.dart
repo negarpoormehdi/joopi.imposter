@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../models/game_state.dart';
 import 'gameplay_screen.dart';
+import 'paint_gameplay_screen.dart';
 
 class RoleDistributionFlowScreen extends StatefulWidget {
   final GameState gameState;
@@ -73,9 +74,12 @@ class _RoleDistributionFlowScreenState extends State<RoleDistributionFlowScreen>
     });
     if (_currentPlayerIndex + 1 >= _total) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
+        final paintEnabled = widget.gameState.paintCanvasModeEnabled;
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (_) => GameplayScreen(gameState: widget.gameState),
+            builder: (_) => paintEnabled
+                ? PaintGameplayScreen(gameState: widget.gameState)
+                : GameplayScreen(gameState: widget.gameState),
           ),
         );
       });
