@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
-import '../widgets/common_widgets.dart';
 import '../models/game_state.dart';
 
 class GameplayScreen extends StatefulWidget {
@@ -136,56 +135,40 @@ class _GameplayScreenState extends State<GameplayScreen> {
     return Scaffold(
       backgroundColor: AppTheme.bgDark,
       body: SafeArea(
+        top: false,
+        bottom: false,
         child: SingleChildScrollView(
+          padding: const EdgeInsets.only(bottom: 24),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppHeader(
-                title: 'گفتگو و پیدا کردن جاسوس',
-                subtitle: 'راند اول • همه با هم صحبت کنید',
-                onBack: () => Navigator.of(context).pop(),
-                navIcon: Icons.arrow_forward_ios,
-              ),
+              const SizedBox(height: 12),
+              _buildHeader(),
               const SizedBox(height: 20),
               _buildTimerSection(),
-              const SizedBox(height: 24),
+              const SizedBox(height: 28),
               _buildControlButtons(),
-              const SizedBox(height: 16),
+              const SizedBox(height: 22),
               _buildDayTurnSection(speaker, target),
-              const SizedBox(height: 12),
+              const SizedBox(height: 14),
               _buildPlayersInGameSection(totalPlayers, spyCount),
-              const SizedBox(height: 12),
+              const SizedBox(height: 14),
               _buildLocationSection(),
-              const SizedBox(height: 12),
+              const SizedBox(height: 14),
               _buildSpyHintSection(),
-              const SizedBox(height: 16),
-              BottomActionButton(
-                title: 'پایان زمان و شروع رأی‌گیری',
-                subtitle: 'آماده‌سازی برای شناسایی مظنون',
-                leftIcon: Icons.check,
-                rightIcon: Icons.arrow_back,
-                leftColor: Colors.amber,
-                rightColor: AppTheme.lightPurple,
-                showLeftGlow: true,
-                showRightGlow: false,
-                onTap: () {
-                  setState(() {
-                    _timer?.cancel();
-                    _isEnded = true;
-                    _showTimeUpDialog();
-                  });
-                },
-              ),
+              const SizedBox(height: 20),
+              _buildEndVotingButton(),
+              const SizedBox(height: 18),
               const Padding(
-                padding: EdgeInsets.only(bottom: 24),
+                padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Center(
                   child: Text.rich(
                     TextSpan(
                       text: 'جاسوس لو رفت یا قصد حدس دارد؟ لمس کنید  ',
                       style: TextStyle(
+                        fontFamily: AppTheme.fontFamily,
                         color: AppTheme.textMuted,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
                       ),
                       children: [
                         WidgetSpan(
@@ -193,7 +176,7 @@ class _GameplayScreenState extends State<GameplayScreen> {
                             padding: EdgeInsets.only(left: 6),
                             child: Icon(
                               Icons.circle,
-                              size: 8,
+                              size: 9,
                               color: AppTheme.pink,
                             ),
                           ),
@@ -201,6 +184,100 @@ class _GameplayScreenState extends State<GameplayScreen> {
                       ],
                     ),
                     textDirection: TextDirection.rtl,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
+      child: SafeArea(
+        bottom: false,
+        child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Row(
+            children: [
+              Container(
+                width: 62,
+                height: 62,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: const LinearGradient(
+                    colors: [AppTheme.primaryPurple, AppTheme.pinkPurple],
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppTheme.primaryPurple.withValues(alpha: 0.35),
+                      blurRadius: 22,
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
+                child: const Icon(
+                  Icons.visibility,
+                  color: Colors.white,
+                  size: 30,
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'گفتگو و پیدا کردن جاسوس',
+                      style: TextStyle(
+                        fontFamily: AppTheme.fontFamily,
+                        color: AppTheme.textPrimary,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w900,
+                        height: 1.1,
+                      ),
+                      textDirection: TextDirection.rtl,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'راند ${_roundNumber.toFa} • همه با هم صحبت کنید',
+                      style: const TextStyle(
+                        fontFamily: AppTheme.fontFamily,
+                        color: AppTheme.textMuted,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        height: 1.2,
+                      ),
+                      textDirection: TextDirection.rtl,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 10),
+              GestureDetector(
+                onTap: () => Navigator.of(context).pop(),
+                behavior: HitTestBehavior.opaque,
+                child: Container(
+                  width: 58,
+                  height: 58,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppTheme.cardBg,
+                    border: Border.all(
+                      color: AppTheme.primaryPurple.withValues(alpha: 0.35),
+                      width: 1.2,
+                    ),
+                  ),
+                  child: const Icon(
+                    Icons.arrow_forward_ios,
+                    color: AppTheme.textPrimary,
+                    size: 20,
                   ),
                 ),
               ),
@@ -216,170 +293,123 @@ class _GameplayScreenState extends State<GameplayScreen> {
         ? 0.0
         : (_timeSeconds / _totalTimeSeconds).clamp(0.0, 1.0);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+    return Center(
       child: SizedBox(
-        height: 300,
+        width: 320,
+        height: 320,
         child: Stack(
           alignment: Alignment.center,
           children: [
             SizedBox(
-              width: 280,
-              height: 280,
+              width: 320,
+              height: 320,
               child: CustomPaint(painter: _TimerPainter(progress: progress)),
             ),
-            Positioned(
+            Positioned.fill(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 6,
+                      horizontal: 20,
+                      vertical: 9,
                     ),
                     decoration: BoxDecoration(
-                      color: _isPaused
-                          ? Colors.amber.withOpacity(0.2)
-                          : _isEnded
-                          ? Colors.red.withOpacity(0.2)
-                          : AppTheme.primaryPurple.withOpacity(0.25),
-                      borderRadius: BorderRadius.circular(16),
+                      color: AppTheme.bgPurple.withValues(alpha: 0.65),
+                      borderRadius: BorderRadius.circular(999),
+                      border: Border.all(
+                        color: AppTheme.primaryPurple.withValues(alpha: 0.45),
+                        width: 1.2,
+                      ),
                     ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 6),
-                          child: Icon(
-                            _isPaused
-                                ? Icons.pause_circle
-                                : _isEnded
-                                ? Icons.alarm
-                                : Icons.circle,
-                            size: 8,
-                            color: _isPaused
-                                ? Colors.amber
-                                : _isEnded
-                                ? Colors.red
-                                : AppTheme.pink,
+                    child: Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(left: 8),
+                            child: Icon(
+                              Icons.circle,
+                              size: 9,
+                              color: AppTheme.pink,
+                            ),
                           ),
-                        ),
-                        Text(
-                          _isEnded
-                              ? 'پایان زمان'
-                              : _isPaused
-                              ? 'متوقف شده'
-                              : 'زمان بازجویی و گفتگو',
-                          style: TextStyle(
-                            color: _isPaused
-                                ? Colors.amber
-                                : _isEnded
-                                ? Colors.red
-                                : AppTheme.primaryPurple,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w700,
+                          Text(
+                            _isEnded
+                                ? 'پایان زمان'
+                                : _isPaused
+                                ? 'متوقف شده'
+                                : 'زمان بازجویی و گفتگو',
+                            style: TextStyle(
+                              fontFamily: AppTheme.fontFamily,
+                              color: _isPaused
+                                  ? AppTheme.orange
+                                  : _isEnded
+                                  ? AppTheme.red
+                                  : AppTheme.lightPurple,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w800,
+                            ),
                           ),
-                          textDirection: TextDirection.rtl,
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
+                  ),
+                  const SizedBox(height: 22),
+                  Text(
+                    _formattedTime,
+                    style: TextStyle(
+                      fontFamily: AppTheme.fontFamily,
+                      color: _timeSeconds < 60
+                          ? AppTheme.red
+                          : AppTheme.textPrimary,
+                      fontSize: 88,
+                      fontWeight: FontWeight.w900,
+                      height: 1,
+                      letterSpacing: -1,
+                    ),
+                    textDirection: TextDirection.ltr,
                   ),
                   const SizedBox(height: 18),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    textDirection: TextDirection.ltr,
-                    children: [
-                      Text(
-                        _formattedTime.characters.first,
-                        style: TextStyle(
-                          color: _timeSeconds < 60
-                              ? Colors.redAccent
-                              : AppTheme.textPrimary,
-                          fontSize: 80,
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: -2,
-                        ),
-                      ),
-                      Text(
-                        _formattedTime.characters.elementAt(1),
-                        style: TextStyle(
-                          color: _timeSeconds < 60
-                              ? Colors.redAccent
-                              : AppTheme.textPrimary,
-                          fontSize: 80,
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: -2,
-                        ),
-                      ),
-                      Text(
-                        ':',
-                        style: TextStyle(
-                          color: _timeSeconds < 60
-                              ? Colors.redAccent
-                              : AppTheme.primaryPurple,
-                          fontSize: 70,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                      Text(
-                        _formattedTime.characters.elementAt(3),
-                        style: TextStyle(
-                          color: _timeSeconds < 60
-                              ? Colors.redAccent
-                              : AppTheme.textPrimary,
-                          fontSize: 80,
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: -2,
-                        ),
-                      ),
-                      Text(
-                        _formattedTime.characters.elementAt(4),
-                        style: TextStyle(
-                          color: _timeSeconds < 60
-                              ? Colors.redAccent
-                              : AppTheme.textPrimary,
-                          fontSize: 80,
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: -2,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 14),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppTheme.cardBgLight,
-                      borderRadius: BorderRadius.circular(14),
-                    ),
+                  Directionality(
+                    textDirection: TextDirection.rtl,
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        Text(
+                          'راند ${_roundNumber.toFa} از ${_totalRounds.toFa}',
+                          style: const TextStyle(
+                            fontFamily: AppTheme.fontFamily,
+                            color: AppTheme.textSecondary,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        const Text(
+                          '•',
+                          style: TextStyle(
+                            color: AppTheme.textMuted,
+                            fontSize: 12,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
                         const Text(
                           'سرعت عادی',
                           style: TextStyle(
-                            color: AppTheme.textSecondary,
+                            fontFamily: AppTheme.fontFamily,
+                            color: AppTheme.textMuted,
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         const SizedBox(width: 8),
-                        Text(
-                          'راند $_roundNumber از $_totalRounds',
-                          style: const TextStyle(
-                            color: AppTheme.textPrimary,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
                         const Icon(
                           Icons.timer_outlined,
-                          color: AppTheme.primaryPurple,
-                          size: 18,
+                          color: AppTheme.lightPurple,
+                          size: 17,
                         ),
                       ],
                     ),
@@ -395,420 +425,614 @@ class _GameplayScreenState extends State<GameplayScreen> {
 
   Widget _buildControlButtons() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 60),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _buildControlButton(
-            icon: Icons.add,
-            label: '+۱ دقیقه',
-            onTap: _addOneMinute,
-            isMain: false,
-          ),
-          const SizedBox(width: 20),
-          _buildControlButton(
-            icon: _isPaused ? Icons.play_arrow : Icons.pause,
-            label: '',
-            onTap: _togglePause,
-            isMain: true,
-          ),
-          const SizedBox(width: 20),
-          _buildControlButton(
-            icon: _soundOn ? Icons.volume_up_outlined : Icons.volume_off,
-            label: '',
-            onTap: () => setState(() => _soundOn = !_soundOn),
-            isMain: false,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildControlButton({
-    required IconData icon,
-    required String label,
-    required VoidCallback onTap,
-    required bool isMain,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: isMain
-          ? Container(
-              width: 76,
-              height: 76,
+      padding: const EdgeInsets.symmetric(horizontal: 44),
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              width: 58,
+              height: 58,
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: _isPaused
-                      ? const [Colors.amber, Color(0xFFF472B6)]
-                      : [AppTheme.primaryPurple, AppTheme.lightPurple],
-                ),
                 shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: (_isPaused ? Colors.amber : AppTheme.primaryPurple)
-                        .withOpacity(0.5),
-                    blurRadius: 24,
-                    spreadRadius: 2,
-                  ),
-                ],
-              ),
-              child: Icon(icon, color: Colors.white, size: 34),
-            )
-          : label.isNotEmpty
-          ? Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-              decoration: BoxDecoration(
                 color: AppTheme.cardBg,
-                borderRadius: BorderRadius.circular(22),
                 border: Border.all(
-                  color: AppTheme.primaryPurple.withOpacity(0.3),
+                  color: AppTheme.primaryPurple.withValues(alpha: 0.35),
+                  width: 1.2,
                 ),
               ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(icon, color: AppTheme.textPrimary, size: 20),
-                  const SizedBox(width: 6),
-                  Text(
-                    label,
-                    style: const TextStyle(
-                      color: AppTheme.textPrimary,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ],
-              ),
-            )
-          : Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                color: AppTheme.cardBg,
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: AppTheme.primaryPurple.withOpacity(0.3),
+              child: GestureDetector(
+                onTap: () => setState(() => _soundOn = !_soundOn),
+                child: Icon(
+                  _soundOn
+                      ? Icons.volume_up_outlined
+                      : Icons.volume_off_outlined,
+                  color: AppTheme.textPrimary,
+                  size: 26,
                 ),
               ),
-              child: Icon(icon, color: AppTheme.textPrimary, size: 26),
             ),
+            const SizedBox(width: 16),
+            GestureDetector(
+              onTap: _togglePause,
+              child: Container(
+                width: 76,
+                height: 76,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: const LinearGradient(
+                    colors: [AppTheme.primaryPurple, AppTheme.lightPurple],
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppTheme.primaryPurple.withValues(alpha: 0.45),
+                      blurRadius: 26,
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
+                child: Icon(
+                  _isPaused ? Icons.play_arrow_rounded : Icons.pause_rounded,
+                  color: Colors.white,
+                  size: 38,
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+            GestureDetector(
+              onTap: _addOneMinute,
+              behavior: HitTestBehavior.opaque,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 18,
+                  vertical: 16,
+                ),
+                decoration: BoxDecoration(
+                  color: AppTheme.cardBg,
+                  borderRadius: BorderRadius.circular(28),
+                  border: Border.all(
+                    color: AppTheme.primaryPurple.withValues(alpha: 0.35),
+                    width: 1.2,
+                  ),
+                ),
+                child: Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.add,
+                        color: AppTheme.textPrimary,
+                        size: 22,
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        '+۱ دقیقه'.toFa,
+                        style: const TextStyle(
+                          fontFamily: AppTheme.fontFamily,
+                          color: AppTheme.textPrimary,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
   Widget _buildDayTurnSection(GamePlayer speaker, GamePlayer target) {
-    return SectionCard(
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        children: [
-          _buildQuestionBubble(),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                const Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    'نوبت طرح پرسش هوشمندانه',
-                    style: TextStyle(
-                      color: AppTheme.textPrimary,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w900,
-                    ),
-                    textDirection: TextDirection.rtl,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+        decoration: BoxDecoration(
+          color: AppTheme.cardBg,
+          borderRadius: BorderRadius.circular(28),
+          border: Border.all(
+            color: AppTheme.primaryPurple.withValues(alpha: 0.3),
+            width: 1.2,
+          ),
+        ),
+        child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildTurnTag(
-                      speaker.name,
-                      'می‌پرسد از',
-                      active: true,
-                      color: AppTheme.pink,
+                    const Text(
+                      'نوبت طرح پرسش هوشمندانه',
+                      style: TextStyle(
+                        fontFamily: AppTheme.fontFamily,
+                        color: AppTheme.textPrimary,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w900,
+                      ),
                     ),
-                    const SizedBox(width: 8),
-                    _buildTurnTag(target.name, 'نفر دوم', active: false),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: GestureDetector(
-                    onTap: _advanceSpeaker,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Icon(
-                          Icons.swipe_left_alt,
-                          color: AppTheme.lightPurple,
-                          size: 16,
+                    const SizedBox(height: 14),
+                    Row(
+                      children: [
+                        _buildTurnTag(
+                          speaker.name,
+                          active: true,
+                          color: AppTheme.primaryPurple,
                         ),
-                        SizedBox(width: 6),
-                        Text(
-                          'رفتن به نوبت نفر بعدی',
+                        const SizedBox(width: 8),
+                        const Text(
+                          'می‌پرسد از',
                           style: TextStyle(
-                            color: AppTheme.textSecondary,
-                            fontSize: 12,
+                            fontFamily: AppTheme.fontFamily,
+                            color: AppTheme.textMuted,
+                            fontSize: 13,
                             fontWeight: FontWeight.w600,
                           ),
-                          textDirection: TextDirection.rtl,
                         ),
+                        const SizedBox(width: 8),
+                        _buildTurnTag(target.name, active: false),
                       ],
                     ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12),
+              Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppTheme.cardBgLight,
+                  border: Border.all(
+                    color: AppTheme.primaryPurple.withValues(alpha: 0.4),
                   ),
                 ),
-              ],
-            ),
+                alignment: Alignment.center,
+                child: const Text(
+                  '؟',
+                  style: TextStyle(
+                    fontFamily: AppTheme.fontFamily,
+                    color: AppTheme.textPrimary,
+                    fontSize: 28,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: 4),
-          const Icon(
-            Icons.arrow_forward_ios_outlined,
-            textDirection: TextDirection.rtl,
-            color: AppTheme.textMuted,
-            size: 18,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildQuestionBubble() {
-    return Container(
-      width: 56,
-      height: 56,
-      decoration: BoxDecoration(
-        color: AppTheme.cardBgLight,
-        shape: BoxShape.circle,
-        border: Border.all(color: AppTheme.primaryPurple.withOpacity(0.4)),
-      ),
-      alignment: Alignment.center,
-      child: const Text(
-        '؟',
-        style: TextStyle(
-          color: AppTheme.textPrimary,
-          fontSize: 28,
-          fontWeight: FontWeight.w900,
         ),
       ),
     );
   }
 
   Widget _buildTurnTag(
-    String name,
-    String role, {
+    String name, {
     bool active = false,
-    Color color = AppTheme.blue,
+    Color color = AppTheme.primaryPurple,
   }) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
-        color: active ? color.withOpacity(0.2) : AppTheme.cardBgLight,
+        color: active ? color.withValues(alpha: 0.22) : AppTheme.cardBgLight,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: active ? color.withOpacity(0.6) : Colors.transparent,
+          color: active ? color.withValues(alpha: 0.6) : Colors.transparent,
         ),
       ),
       child: Text(
         name,
         style: TextStyle(
+          fontFamily: AppTheme.fontFamily,
           color: active ? color : AppTheme.textPrimary,
           fontSize: 15,
           fontWeight: FontWeight.w800,
         ),
+        textDirection: TextDirection.rtl,
       ),
     );
   }
 
   Widget _buildPlayersInGameSection(int totalPlayers, int spyCount) {
-    return SectionCard(
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        children: [
-          const IconCircle(
-            icon: Icons.groups_2_outlined,
-            color: AppTheme.primaryPurple,
-            glow: true,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+        decoration: BoxDecoration(
+          color: AppTheme.cardBg,
+          borderRadius: BorderRadius.circular(28),
+          border: Border.all(
+            color: AppTheme.primaryPurple.withValues(alpha: 0.3),
+            width: 1.2,
           ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: const [
-                    Text(
+        ),
+        child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
                       'مظنونین حاضر در بازی',
                       style: TextStyle(
+                        fontFamily: AppTheme.fontFamily,
                         color: AppTheme.textPrimary,
-                        fontSize: 18,
+                        fontSize: 17,
                         fontWeight: FontWeight.w900,
                       ),
-                      textDirection: TextDirection.rtl,
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      '${widget.gameState.activeCategories.join(' • ')}',
+                      style: const TextStyle(
+                        fontFamily: AppTheme.fontFamily,
+                        color: AppTheme.textSecondary,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 14),
+                    Row(
+                      children: [
+                        _buildSmallBadge(
+                          text: '${totalPlayers.toFa} بازیکن',
+                          color: AppTheme.primaryPurple,
+                          bg: AppTheme.primaryPurple.withValues(alpha: 0.15),
+                        ),
+                        const SizedBox(width: 10),
+                        _buildSmallBadge(
+                          text: '${spyCount.toFa} جاسوس',
+                          color: AppTheme.pink,
+                          bg: AppTheme.red.withValues(alpha: 0.18),
+                          dot: true,
+                        ),
+                      ],
                     ),
                   ],
                 ),
-                const SizedBox(height: 6),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    '${widget.gameState.activeCategories.join(' • ')}',
-                    style: const TextStyle(
-                      color: AppTheme.textSecondary,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    textDirection: TextDirection.rtl,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(width: 12),
+              Container(
+                width: 58,
+                height: 58,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppTheme.bgPurple.withValues(alpha: 0.6),
+                  border: Border.all(
+                    color: AppTheme.primaryPurple.withValues(alpha: 0.5),
                   ),
                 ),
-                const SizedBox(height: 14),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    BadgeTag(
-                      text: '${totalPlayers.toFa} بازیکن',
-                      color: AppTheme.primaryPurple,
-                    ),
-                    const SizedBox(width: 10),
-                    BadgeTag(
-                      text: '${spyCount.toFa} جاسوس',
-                      color: AppTheme.pink,
-                    ),
-                  ],
+                child: const Icon(
+                  Icons.groups_2_outlined,
+                  color: AppTheme.lightPurple,
+                  size: 28,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSmallBadge({
+    required String text,
+    required Color color,
+    required Color bg,
+    bool dot = false,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: color.withValues(alpha: 0.45)),
+      ),
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (dot) ...[
+              Container(
+                margin: const EdgeInsets.only(left: 6),
+                width: 8,
+                height: 8,
+                decoration: BoxDecoration(shape: BoxShape.circle, color: color),
+              ),
+            ],
+            Text(
+              text,
+              style: TextStyle(
+                fontFamily: AppTheme.fontFamily,
+                color: color,
+                fontSize: 13,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildLocationSection() {
-    return SectionCard(
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: () => setState(() => _showLocation = !_showLocation),
-            child: IconCircle(
-              icon: _showLocation ? Icons.visibility : Icons.visibility_off,
-              color: AppTheme.primaryPurple,
-              glow: true,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: GestureDetector(
+        onTap: () => setState(() => _showLocation = !_showLocation),
+        behavior: HitTestBehavior.opaque,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+          decoration: BoxDecoration(
+            color: AppTheme.cardBg,
+            borderRadius: BorderRadius.circular(28),
+            border: Border.all(
+              color: AppTheme.primaryPurple.withValues(alpha: 0.3),
+              width: 1.2,
             ),
           ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+          child: Directionality(
+            textDirection: TextDirection.rtl,
+            child: Row(
               children: [
-                const Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    'یادآوری مکان بازی',
-                    style: TextStyle(
-                      color: AppTheme.textPrimary,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w900,
-                    ),
-                    textDirection: TextDirection.rtl,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'یادآوری مکان بازی',
+                        style: TextStyle(
+                          fontFamily: AppTheme.fontFamily,
+                          color: AppTheme.textPrimary,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        _showLocation
+                            ? 'توجه: جاسوس نباید ببیند'
+                            : 'مشاهده امن و محرمانه کلمه',
+                        style: const TextStyle(
+                          fontFamily: AppTheme.fontFamily,
+                          color: AppTheme.textSecondary,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(height: 14),
+                      _buildSmallBadge(
+                        text: _showLocation
+                            ? widget.gameState.location
+                            : 'دیدن مکان',
+                        color: AppTheme.primaryPurple,
+                        bg: AppTheme.bgPurple.withValues(alpha: 0.6),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 6),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
+                const SizedBox(width: 12),
+                Container(
+                  width: 58,
+                  height: 58,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppTheme.cardBgLight,
+                    border: Border.all(
+                      color: AppTheme.primaryPurple.withValues(alpha: 0.45),
+                    ),
+                  ),
+                  child: Icon(
                     _showLocation
-                        ? 'توجه: جاسوس نباید ببیند'
-                        : 'مشاهده امن و محرمانه کلمه',
-                    style: const TextStyle(
-                      color: AppTheme.textSecondary,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    textDirection: TextDirection.rtl,
-                  ),
-                ),
-                const SizedBox(height: 14),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: GestureDetector(
-                    onTap: () => setState(() => _showLocation = !_showLocation),
-                    child: BadgeTag(
-                      text: _showLocation
-                          ? widget.gameState.location
-                          : 'دیدن مکان',
-                      color: AppTheme.primaryPurple,
-                      icon: _showLocation ? Icons.visibility : Icons.visibility,
-                    ),
+                        ? Icons.location_on_rounded
+                        : Icons.location_on_outlined,
+                    color: AppTheme.lightPurple,
+                    size: 26,
                   ),
                 ),
               ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
 
   Widget _buildSpyHintSection() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [AppTheme.cardBg, AppTheme.primaryPurple.withOpacity(0.1)],
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Container(
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          color: AppTheme.cardBg,
+          borderRadius: BorderRadius.circular(26),
+          border: Border.all(
+            color: AppTheme.primaryPurple.withValues(alpha: 0.32),
+          ),
         ),
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: AppTheme.primaryPurple.withOpacity(0.4)),
-      ),
-      child: Row(
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(bottom: 40),
-            child: Icon(
-              Icons.lightbulb_outline,
-              color: AppTheme.primaryPurple,
-              size: 20,
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: const [
-                Text(
-                  'استراتژی بازی: طوری جواب دهید که شهروندان بفهمند شما باخبر هستید، اما مکان لو نرود!',
-                  style: TextStyle(
-                    color: AppTheme.textPrimary,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    height: 1.6,
-                  ),
-                  textDirection: TextDirection.rtl,
-                ),
-                SizedBox(height: 6),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'راهنمای بازی',
-                    style: TextStyle(
-                      color: AppTheme.textSecondary,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
+        child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.lightbulb_outline_rounded,
+                          color: AppTheme.primaryPurple.withValues(alpha: 0.9),
+                          size: 17,
+                        ),
+                        const SizedBox(width: 8),
+                        const Flexible(
+                          child: Text(
+                            'استراتژی بازی:',
+                            style: TextStyle(
+                              fontFamily: AppTheme.fontFamily,
+                              color: AppTheme.textMuted,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'طوری جواب دهید که شهروندان بفهمند شما باخبر هستید، اما مکان لو نرود!',
+                      style: TextStyle(
+                        fontFamily: AppTheme.fontFamily,
+                        color: AppTheme.textPrimary,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        height: 1.6,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'راهنمای بازی',
+                        style: TextStyle(
+                          fontFamily: AppTheme.fontFamily,
+                          color: AppTheme.textMuted,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEndVotingButton() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+        decoration: BoxDecoration(
+          color: AppTheme.cardBg,
+          borderRadius: BorderRadius.circular(30),
+          border: Border.all(
+            color: AppTheme.primaryPurple.withValues(alpha: 0.55),
+            width: 1.3,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: AppTheme.primaryPurple.withValues(alpha: 0.15),
+              blurRadius: 30,
+              spreadRadius: 1,
+            ),
+          ],
+        ),
+        child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Row(
+            children: [
+              Container(
+                width: 58,
+                height: 58,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppTheme.bgPurple.withValues(alpha: 0.7),
+                  border: Border.all(
+                    color: AppTheme.primaryPurple.withValues(alpha: 0.6),
                   ),
                 ),
-              ],
-            ),
+                child: const Icon(
+                  Icons.replay_rounded,
+                  color: AppTheme.lightPurple,
+                  size: 28,
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: Row(
+                        children: [
+                          Text(
+                            '🔥 پایان زمان و شروع رأی‌گیری',
+                            style: const TextStyle(
+                              fontFamily: AppTheme.fontFamily,
+                              color: AppTheme.textPrimary,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      'آماده‌سازی برای شناسایی مظنون',
+                      style: TextStyle(
+                        fontFamily: AppTheme.fontFamily,
+                        color: AppTheme.textMuted,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 10),
+              Container(
+                width: 58,
+                height: 58,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.white.withValues(alpha: 0.22),
+                      blurRadius: 18,
+                      spreadRadius: 1,
+                    ),
+                  ],
+                ),
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _timer?.cancel();
+                      _isEnded = true;
+                      _showTimeUpDialog();
+                    });
+                  },
+                  child: const Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: AppTheme.bgDark,
+                    size: 24,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -822,41 +1046,26 @@ class _TimerPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
-    final radius = size.width / 2 - 10;
+    final radius = size.width / 2 - 14;
 
-    final paintBg = Paint()
-      ..color = AppTheme.cardBgLight
+    final bgPaint = Paint()
+      ..color = AppTheme.cardBg.withValues(alpha: 0.85)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 14
+      ..strokeWidth = 16
       ..strokeCap = StrokeCap.round;
 
-    final paintProgress = Paint()
-      ..shader = const SweepGradient(
-        startAngle: -1.57,
-        endAngle: 4.71,
-        colors: [
-          AppTheme.pink,
-          AppTheme.pinkPurple,
-          AppTheme.primaryPurple,
-          AppTheme.lightPurple,
-        ],
-        stops: [0.0, 0.3, 0.7, 1.0],
-      ).createShader(Rect.fromCircle(center: center, radius: radius))
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 14
-      ..strokeCap = StrokeCap.round;
-
-    canvas.drawCircle(center, radius, paintBg);
+    canvas.drawCircle(center, radius, bgPaint);
 
     final dashPaint = Paint()
-      ..color = AppTheme.primaryPurple.withOpacity(0.2)
+      ..color = AppTheme.primaryPurple.withValues(alpha: 0.22)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
+      ..strokeWidth = 2.2
+      ..strokeCap = StrokeCap.round;
 
     const dashCount = 60;
-    const dashAngle = (2 * 3.14159) / dashCount;
-    const dashLength = 6.0;
-    final innerR = radius - 20;
+    const dashAngle = (2 * pi) / dashCount;
+    const dashLen = 7.0;
+    final innerR = radius - 22;
     final outerR = radius - 12;
 
     for (var i = 0; i < dashCount; i++) {
@@ -872,16 +1081,33 @@ class _TimerPainter extends CustomPainter {
       canvas.drawLine(start, end, dashPaint);
     }
 
-    final sweepAngle = 2 * pi * progress;
+    final progressPaint = Paint()
+      ..shader = SweepGradient(
+        startAngle: -1.57,
+        endAngle: 4.71,
+        colors: const [
+          AppTheme.pink,
+          AppTheme.pinkPurple,
+          AppTheme.primaryPurple,
+          AppTheme.lightPurple,
+        ],
+        stops: const [0.0, 0.28, 0.72, 1.0],
+      ).createShader(Rect.fromCircle(center: center, radius: radius))
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 16
+      ..strokeCap = StrokeCap.round;
+
+    final sweep = 2 * pi * progress;
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
       -pi / 2,
-      sweepAngle,
+      sweep,
       false,
-      paintProgress,
+      progressPaint,
     );
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+  bool shouldRepaint(covariant _TimerPainter oldDelegate) =>
+      oldDelegate.progress != progress;
 }
